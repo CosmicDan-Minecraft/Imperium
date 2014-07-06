@@ -31,6 +31,7 @@ public class BlockBrushwood extends Block
         public void updateTick(World world, int x, int y, int z, Random random) {
             //this.growCropsNearby(world, x, y, z);
             //net.minecraft.server.MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new net.minecraft.util.ChatComponentText("Tick-tock!"));
+            // TODO - Have Brushwood randomly regenerate, and/or have brushwood randomly spawn when leaves decay
         }
         
         //If the block's drop is an item.
