@@ -1,0 +1,16 @@
+[
+{
+  "modid": "minecraftempires",
+  "name": "Minecraft Empires",
+  "description": "Settle, Develop, Research and Conquer the Land!",
+  "version": "PROTOTYPE",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["CosmicDan"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
