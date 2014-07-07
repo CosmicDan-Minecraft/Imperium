@@ -3,6 +3,7 @@ package com.cosmicdan.minecraftempires;
 import java.util.Random;
 
 import com.cosmicdan.minecraftempires.blocks.BlockBrushwood;
+import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerOthers;
 import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
 import com.cosmicdan.minecraftempires.items.ItemBrushwood;
 import com.cosmicdan.minecraftempires.items.ItemJournal;
@@ -15,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -60,13 +62,14 @@ public class Main
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        FMLCommonHandler.instance().bus().register(EventHandlerOthers.INSTANCE);
         proxy.init(event);
         //System.out.println(MODID + " v" + VERSION);
     }
     
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-            // Stub Method
+            // something
     }
     
     public void generateSurface(World world, Random random, int chunkX, int chunkZ) {
