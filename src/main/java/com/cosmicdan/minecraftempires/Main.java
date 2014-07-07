@@ -71,17 +71,4 @@ public class Main
     public void postInit(FMLPostInitializationEvent event) {
             // something
     }
-    
-    public void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-        //BiomeGenBase biomegenbase = world.getWorldChunkManager().getBiomeGenAt(chunkX, j);
-        // the roof number here determines the frequency (higher is more common)
-        for(int k = 0; k < 32; k++) {
-            int randPosX = chunkX + random.nextInt(16);
-            // maximum height to spawn
-            int randPosY = random.nextInt(128);
-            int randPosZ = chunkZ + random.nextInt(16);
-            (new WorldGenFlowers(blockBrushwood)).generate(world, random, randPosX, randPosY, randPosZ);
-        }
-    }
-    
 }
