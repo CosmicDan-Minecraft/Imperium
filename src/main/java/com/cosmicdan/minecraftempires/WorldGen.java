@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenFlowers;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGen implements IWorldGenerator {

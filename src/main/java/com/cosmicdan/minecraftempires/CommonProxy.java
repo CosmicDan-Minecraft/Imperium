@@ -1,8 +1,13 @@
 package com.cosmicdan.minecraftempires;
 
-public class CommonProxy {
-    // Server stuff
-    public void registerRenderers() {
-        // Nothing here as the server doesn't render graphics or entities!
-    }
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.common.config.Configuration;
+
+public interface CommonProxy {
+    void init(FMLInitializationEvent event);
+
+    void postInit(FMLPostInitializationEvent event);
+    
+    void openJournal();
 }

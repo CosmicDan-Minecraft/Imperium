@@ -5,6 +5,7 @@ import java.util.Random;
 import com.cosmicdan.minecraftempires.blocks.BlockBrushwood;
 import com.cosmicdan.minecraftempires.eventhandlers.BlockBreakHandler;
 import com.cosmicdan.minecraftempires.items.ItemBrushwood;
+import com.cosmicdan.minecraftempires.items.ItemJournal;
 import com.cosmicdan.minecraftempires.recipes.ShapelessRecipes;
 
 import net.minecraft.block.Block;
@@ -32,11 +33,12 @@ public class Main
     // new blocks/items
     public static Block blockBrushwood;
     public static Item itemBrushwood;
+    public static Item itemJournal;
     
     @Instance(value = MODID)
     public static Main instance;
     
-    @SidedProxy(clientSide="com.cosmicdan.minecraftempires.client.ClientProxy", serverSide="com.cosmicdan.minecraftempires.CommonProxy")
+    @SidedProxy(clientSide="com.cosmicdan.minecraftempires.client.ClientProxy", serverSide="com.cosmicdan.minecraftempires.server.ServerProxy")
     public static CommonProxy proxy;
     
     @EventHandler
@@ -46,6 +48,8 @@ public class Main
         GameRegistry.registerBlock(blockBrushwood, "blockBrushwood");
         itemBrushwood = new ItemBrushwood();
         GameRegistry.registerItem(itemBrushwood, "itemBrushwood");
+        itemJournal = new ItemJournal();
+        GameRegistry.registerItem(itemJournal, "itemJournal");
         
         // recipes
         ShapelessRecipes.RecipeShelter();
@@ -56,7 +60,7 @@ public class Main
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.registerRenderers();
+        proxy.init(event);
         //System.out.println(MODID + " v" + VERSION);
     }
     
