@@ -3,7 +3,7 @@ package com.cosmicdan.minecraftempires;
 import java.util.Random;
 
 import com.cosmicdan.minecraftempires.blocks.BlockBrushwood;
-import com.cosmicdan.minecraftempires.eventhandlers.BlockBreakHandler;
+import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
 import com.cosmicdan.minecraftempires.items.ItemBrushwood;
 import com.cosmicdan.minecraftempires.items.ItemJournal;
 import com.cosmicdan.minecraftempires.recipes.ShapelessRecipes;
@@ -55,7 +55,7 @@ public class Main
         ShapelessRecipes.RecipeShelter();
         
         GameRegistry.registerWorldGenerator(new WorldGen(), 1);
-        MinecraftForge.EVENT_BUS.register(new BlockBreakHandler());
+        MinecraftForge.EVENT_BUS.register(new EventHandlerRestrictions());
     }
     
     @EventHandler
