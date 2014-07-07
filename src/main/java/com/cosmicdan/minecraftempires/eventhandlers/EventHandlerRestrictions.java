@@ -9,7 +9,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
-// This class is responsible for imposing restrictions depending on their progression
+// This class is responsible for imposing restrictions depending on their progression,
+// this will become massive so it gets it's own class
 public class EventHandlerRestrictions {
     @SubscribeEvent
     public void onBreakSpeed(BreakSpeed event) {

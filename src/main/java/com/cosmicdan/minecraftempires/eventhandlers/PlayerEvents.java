@@ -8,7 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 
-public enum EventHandlerOthers {
+// Player events
+public enum PlayerEvents {
     
     INSTANCE;
     

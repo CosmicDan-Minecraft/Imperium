@@ -3,7 +3,7 @@ package com.cosmicdan.minecraftempires;
 import java.util.Random;
 
 import com.cosmicdan.minecraftempires.blocks.BlockBrushwood;
-import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerOthers;
+import com.cosmicdan.minecraftempires.eventhandlers.PlayerEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
 import com.cosmicdan.minecraftempires.items.ItemBrushwood;
 import com.cosmicdan.minecraftempires.items.ItemJournal;
@@ -62,7 +62,7 @@ public class Main
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        FMLCommonHandler.instance().bus().register(EventHandlerOthers.INSTANCE);
+        FMLCommonHandler.instance().bus().register(PlayerEvents.INSTANCE);
         proxy.init(event);
         //System.out.println(MODID + " v" + VERSION);
     }
