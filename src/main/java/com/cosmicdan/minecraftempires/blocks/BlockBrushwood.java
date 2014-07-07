@@ -17,7 +17,6 @@ public class BlockBrushwood extends Block
         public BlockBrushwood() {
             super(Material.grass);
             setBlockName("Brushwood");
-            //setBlockName("minecraftempires:Brushwood");
             setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
             setBlockTextureName("minecraftempires:brushwood");
             setTickRandomly(true);
