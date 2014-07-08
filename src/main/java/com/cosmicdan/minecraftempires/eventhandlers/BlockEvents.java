@@ -10,22 +10,32 @@ import com.cosmicdan.minecraftempires.Main;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+// this class is responsible for individual block events
 public class BlockEvents {
     
-    // Chance of a manually destroyed leaf to generate a Brushwood block (percentage)
+    /*
+     *  USER VARS
+     *  These will be relocated to a mod config file later-on
+     */
+    // Chance of a broken leaf block to generate a Brushwood block underneath it (as percentage)
     int leafBrushwoodChance = 33;
     
+    // Events for when a block is broken
     @SubscribeEvent
     public void onBlockBreak(BreakEvent event) {
+        // check if the block broken was a leaf block
         if (event.block.getMaterial() == Material.leaves) {
+            // get a random number instance
             Random random = new Random();
+            // calculate the percentage and continue if fortunate. Note that random.nextInt will return an int from 0-99
             if ((random.nextInt(100)) < leafBrushwoodChance) {
-                //EntityItem i = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(Items.stick));
-                //e.world.spawnEntityInWorld(i);
+                // get the height of surface from where the leaf was destroyed
                 int y = event.world.getTopSolidOrLiquidBlock(event.x, event.z);
+                // get the surface block of where the leaf was destroyed as 'spawnCandidate' 
                 Block spawnCandidate = event.world.getBlock(event.x, y, event.z);
+                // ensure that spawnCandidate is (a) an air block and (b) below the leaf block that was destroyed
                 if (spawnCandidate.isAir(event.world, event.x, y, event.z) && y < event.y) {
-                    //event.world.setBlock(event.x, y, event.z, Main.blockBrushwood, 0, 0);
+                    // spawnCandidate is valid, place Brushwood block!
                     event.world.setBlock(event.x, y, event.z, Main.blockBrushwood);
                 }
             }

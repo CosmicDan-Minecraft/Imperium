@@ -23,16 +23,16 @@ public class PlayerEvents {
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) { 
         EntityPlayerMP player = (EntityPlayerMP)event.player;
         PlayerData playerData = new PlayerData(player);
-        // I think this should only be run on client...
+        // TODO: I think this should only be run on client, I18n causes dedicated server to crash 
+        //       not sure if that's a Forge bug or if there is a better way for string formatting...
         playerData.welcome();
-        //initPlayer(playerData.playerDataPersisted, playerData.isNewPlayer);
-            
     }
     
     @SubscribeEvent
     public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        //System.out.println("Logged out!");
-        PlayerData.savePlayerData((EntityPlayerMP)event.player);
+        // DISABLED. We only want player data to save when the server shuts down!
+        // TODO: But is this safe? No, if the server crashes a lot could be lost.
+        //PlayerData.savePlayerData((EntityPlayerMP)event.player);
     }
     
 }

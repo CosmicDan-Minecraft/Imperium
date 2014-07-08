@@ -70,14 +70,18 @@ public class Main
         // recipes
         ShapelessRecipes.RecipeShelter();
         
+        // world generation
         GameRegistry.registerWorldGenerator(new WorldGen(), 1);
+        
+        // hook events for restrictions
         MinecraftForge.EVENT_BUS.register(new EventHandlerRestrictions());
+        
+        // hook events for blocks
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
     }
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        //FMLCommonHandler.instance().bus().register(PlayerEvents.INSTANCE);
         FMLCommonHandler.instance().bus().register(new PlayerEvents());
         proxy.init(event);
         //System.out.println(MODID + " v" + VERSION);
@@ -99,9 +103,7 @@ public class Main
             // loop over all players
             for(int i = 0; i < allNames.length; i++) {
                 // func_152612_a = getPlayerForUsername
-                //EntityPlayerMP player = mc.getConfigurationManager().getPlayerForUsername(allNames[i]);
                 EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
-                //PlayerEvents.savePlayerData(player)
                 PlayerData.savePlayerData((EntityPlayerMP)player);
             }
         }

@@ -9,9 +9,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
 public class ServerProxy implements CommonProxy {
     @Override
-    public void init(FMLInitializationEvent event) { 
-        //NBTTagCompound dataServer = event.
-    }
+    public void init(FMLInitializationEvent event) { }
     
     @Override
     public void postInit(FMLPostInitializationEvent event) { }

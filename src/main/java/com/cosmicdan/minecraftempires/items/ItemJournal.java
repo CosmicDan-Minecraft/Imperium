@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+// This is the Journal item. Self-explanatory.
 public class ItemJournal extends Item {
     public ItemJournal() {
         setMaxStackSize(1);

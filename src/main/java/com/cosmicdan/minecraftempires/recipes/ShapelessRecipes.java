@@ -8,13 +8,19 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+// New shapeless recipe's here.
 public class ShapelessRecipes {
     public static void RecipeShelter() {
+        // declare item stacks for recipe ingredients. Bit misleading, "ItemStack" is just a type meaning the item in an inventory (doesn't mean more than 1)
         ItemStack itemStackBrushwood = new ItemStack(Main.itemBrushwood);
-        // For now, 4 Brushwoods just makes a bed. Todo:
+        // For now, 4 Brushwood just makes a bed. Todo:
         //  - Make it a custom "Shelter" bed
-        //  - Model for it (hard)
-        //  - Duplicate vanilla bed code, but shelter has a 100% chance to "break" when player awakes (not quite as hard)
-        GameRegistry.addShapelessRecipe(new ItemStack(Items.bed, 1), new Object[] {itemStackBrushwood, itemStackBrushwood, itemStackBrushwood, itemStackBrushwood});
+        //  - Duplicate vanilla bed code, but shelter has a 100% chance to "break" when player awakes (hard)
+        //  - Make a model for it (even harder)
+        GameRegistry.addShapelessRecipe(
+                // Recipe result - a bed
+                new ItemStack(Items.bed, 1),
+                // Recipe ingredients - 4x Brushwood
+                new Object[] {itemStackBrushwood, itemStackBrushwood, itemStackBrushwood, itemStackBrushwood});
     }
 }

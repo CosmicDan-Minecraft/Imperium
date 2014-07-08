@@ -21,6 +21,7 @@ public class ClientProxy implements CommonProxy {
     
     @Override
     public void openJournal() {
+        // client-only hook command for when user presses right-click on their Journal (called from the Journal item class)
         Minecraft.getMinecraft().displayGuiScreen(new GuiJournalBook());
     }
 }
