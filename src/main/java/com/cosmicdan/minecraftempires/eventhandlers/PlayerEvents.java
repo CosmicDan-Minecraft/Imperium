@@ -1,33 +1,38 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
-import com.cosmicdan.minecraftempires.Main;
+import java.util.Calendar;
 
-import net.minecraft.entity.player.EntityPlayer;
+import com.cosmicdan.minecraftempires.Main;
+import com.cosmicdan.minecraftempires.datamanagement.PlayerData;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 // Player events
-public enum PlayerEvents {
-    
-    INSTANCE;
-    
-    private static final String NBT_KEY = "minecraftempires.firstjoin";
+public class PlayerEvents {
+    // other events of interest not yet used: onPlayerChangedDimension and onPlayerRespawn
     
     @SubscribeEvent
-    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        NBTTagCompound data = event.player.getEntityData();
-        NBTTagCompound persistent;
-        if (!data.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
-            data.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistent = new NBTTagCompound()));
-        } else {
-            persistent = data.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-        }
-
-        if (!persistent.hasKey(NBT_KEY)) {
-            persistent.setBoolean(NBT_KEY, true);
-            event.player.inventory.addItemStackToInventory(new ItemStack(Main.itemJournal));
-        }
+    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) { 
+        EntityPlayerMP player = (EntityPlayerMP)event.player;
+        PlayerData playerData = new PlayerData(player);
+        // I think this should only be run on client...
+        playerData.welcome();
+        //initPlayer(playerData.playerDataPersisted, playerData.isNewPlayer);
+            
     }
+    
+    @SubscribeEvent
+    public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        //System.out.println("Logged out!");
+        PlayerData.savePlayerData((EntityPlayerMP)event.player);
+    }
+    
 }

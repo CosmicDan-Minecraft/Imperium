@@ -1,3 +1,6 @@
 tile.Brushwood.name=Brushwood
 item.Brushwood.name=Brushwood
 item.Journal.name=Journal
+
+journal.written=You have written in your Journal...
+text.welcome=Welcome back %s. It is day %s of your legacy.
