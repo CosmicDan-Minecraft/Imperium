@@ -1,5 +1,7 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
+import java.util.ArrayList;
+
 import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
 
@@ -27,7 +29,14 @@ public class WorldTickEvents {
     private final Long ticksNoon = 6000L;
     private final Long ticksEvening = 12000L;
     private final Long ticksMidnight = 18000L;
-    //private NBTTagCompound worldDataGlobal;
+    
+    // how many ticks between checking for "instant" events (I really don't want to check for instants every tick)
+    private int instantTickDelay = 20;
+    
+    private int instantTickDelayReset = instantTickDelay;
+    private static ArrayList<String> eventPendingInstantUsers = new ArrayList();
+    
+    public static Boolean eventPendingInstant = false;
     
     public WorldTickEvents() {
         //WorldData worldData = new WorldData(); 
@@ -38,10 +47,18 @@ public class WorldTickEvents {
     @SubscribeEvent
     public void onWorldTick(WorldTickEvent event) {
         if(event.side == Side.SERVER && event.phase == Phase.END) {
-            // only operate on overworld (for now)
             World world = event.world;
-            if (world.provider.dimensionId == 0) {
+            if (world.provider.dimensionId == 0) { // only operate on overworld (for now)
                 Long thisTick = world.getWorldTime();
+                if (instantTickDelay == 0) {
+                    if (WorldTickEvents.eventPendingInstant) {
+                        if (eventPendingInstantUsers.size() > 0) { // player instants
+                            doPlayerInstants();
+                        }
+                    }
+                    instantTickDelay = instantTickDelayReset;
+                }
+                instantTickDelay--;
                 if (thisTick % ticksPerQuartHour == 0) { // check for stuff every in-game quarter-hour
                     globalTicker(event);
                 }
@@ -63,8 +80,12 @@ public class WorldTickEvents {
         MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(msg));
     }
     
+    public static void addPlayerToPendingInstants(EntityPlayerMP player) {
+        eventPendingInstantUsers.add(player.getDisplayName());
+    }
+    
     /*
-     * Iterates over all players and handles their events
+     * Iterates over all players and handles their NEXT events
      */
     private void doPlayerEvents() {
         MinecraftServer mc = FMLClientHandler.instance().getServer();
@@ -76,5 +97,22 @@ public class WorldTickEvents {
             if (playerME.eventPending)
                 playerME.doEvents();
         }
+    }
+    
+    /*
+     * Iterates over all players and handles their INSTANT events
+     */
+    private void doPlayerInstants() {
+        String[] allNames = new String[eventPendingInstantUsers.size()];
+        allNames = eventPendingInstantUsers.toArray(allNames);
+        for(int i = 0; i < allNames.length; i++) {
+            // func_152612_a = getPlayerForUsername
+            EntityPlayerMP thisPlayer = (EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
+            // TODO: Ensure they're currently in-world, and heck if this is a valid playername (just in case)
+            EntityPlayerME playerME = EntityPlayerME.get(thisPlayer);
+            playerME.doInstantEvents();
+        }
+        eventPendingInstantUsers = new ArrayList();
+        eventPendingInstant = false;
     }
 }

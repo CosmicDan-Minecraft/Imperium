@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 
+import com.cosmicdan.minecraftempires.eventhandlers.WorldTickEvents;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 
 import net.minecraft.entity.Entity;
@@ -27,6 +28,7 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     public Boolean hasData = false;
     public Boolean eventPending = false;
     public ArrayList eventListPending = new ArrayList(0);
+    public ArrayList eventListPendingInstant = new ArrayList(0);
     public ArrayList eventListDone = new ArrayList(0);
     public Long lastLogin, lastSave = 0L;
     
@@ -46,8 +48,10 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     @Override
     public void saveNBTData(NBTTagCompound playerData) {
         NBTTagCompound playerProps = new NBTTagCompound();
+        playerProps.setBoolean("hasData", true);
         playerProps.setBoolean("eventPending", eventPending);
         playerProps.setString("eventListPending", eventListPending.toString());
+        playerProps.setString("eventListPendingInstant", eventListPendingInstant.toString());
         playerProps.setString("eventListDone", eventListDone.toString());
         playerProps.setLong("lastLogin", this.lastLogin);
         playerProps.setLong("lastSave", this.player.worldObj.getTotalWorldTime());
@@ -61,6 +65,16 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         if (!hasData) return;
         this.eventPending = playerProps.getBoolean("eventPending");
         this.eventListPending = nbtStringToArrayList(playerProps.getString("eventListPending"));
+        this.eventListPendingInstant = nbtStringToArrayList(playerProps.getString("eventListPendingInstant"));
+        if (this.eventListPendingInstant.size() > 0) {
+            //System.out.println(">>> Player has pending events!");
+            WorldTickEvents.eventPendingInstant = true;
+            WorldTickEvents.addPlayerToPendingInstants(player);
+        } else {
+            //System.out.println("<<< Player does NOT have pending events!");
+            // this is probably not necessary, might be better to check the actual NBT tag first instead
+            eventListPendingInstant = new ArrayList(0);
+        }
         this.eventListDone = nbtStringToArrayList(playerProps.getString("eventListDone"));
         this.lastLogin = player.worldObj.getTotalWorldTime();
         this.lastSave = playerProps.getLong("lastSave");
@@ -76,16 +90,30 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         return eventListPending.add(event);
     }
     
+    public Boolean addInstantEvent(Enum event) {
+        return eventListPendingInstant.add(event);
+    }
+    
     public void doEvents() {
-        System.out.println("'" + eventListPending.toString() + "'");
         for (Object event : eventListPending) {
-            if (eventTypeEssential(event.toString()))
-                PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
-            
-            eventListDone.add(event.toString());
+            doEventInternalProc(event);
         }
         eventListPending = new ArrayList(0);
         eventPending = false;
+    }
+    
+    public void doInstantEvents() {
+        for (Object event : eventListPendingInstant) {
+            doEventInternalProc(event);
+        }
+        eventListPendingInstant = new ArrayList(0);
+    }
+    
+    private void doEventInternalProc(Object event) {
+        if (eventTypeEssential(event.toString()))
+            PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
+        
+        eventListDone.add(event.toString());
     }
     
     /*
@@ -95,6 +123,7 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         ArrayList retval = new ArrayList(0);
         List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
         for (String event : list) {
+            if (event.isEmpty()) break;
             if (eventTypeEssential(event))
                 retval.add(EssentialEvents.valueOf(event));
         }

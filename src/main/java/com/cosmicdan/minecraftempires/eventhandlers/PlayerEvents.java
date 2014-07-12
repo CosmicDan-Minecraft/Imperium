@@ -29,8 +29,10 @@ public class PlayerEvents {
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         EntityPlayerME playerME = EntityPlayerME.get((EntityPlayerMP)event.player);
         if (!playerME.hasData) {
-            playerME.addEvent(EssentialEvents.FIRSTJOIN);
-            playerME.eventPending = true;
+            playerME.addInstantEvent(EssentialEvents.FIRSTJOIN);
+            //playerME.eventPending = true;
+            WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)event.player);
+            WorldTickEvents.eventPendingInstant = true;
         }
         String msg = StatCollector.translateToLocalFormatted("text.welcome", event.player.getDisplayName(), WorldData.worldDay);
         event.player.addChatMessage(new ChatComponentText(msg));
