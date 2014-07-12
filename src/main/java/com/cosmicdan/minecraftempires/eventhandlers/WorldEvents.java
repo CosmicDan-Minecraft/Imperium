@@ -1,7 +1,7 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
-import com.cosmicdan.minecraftempires.datamanagement.WorldData;
-import com.cosmicdan.minecraftempires.datamanagement.WorldDataHandler;
+import com.cosmicdan.minecraftempires.medata.world.WorldData;
+import com.cosmicdan.minecraftempires.medata.world.WorldDataHandler;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

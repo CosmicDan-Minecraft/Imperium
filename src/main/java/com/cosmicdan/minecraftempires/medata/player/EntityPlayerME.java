@@ -1,4 +1,4 @@
-package com.cosmicdan.minecraftempires.playermanagement;
+package com.cosmicdan.minecraftempires.medata.player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 
-import com.cosmicdan.minecraftempires.playermanagement.EventsEssential.EssentialEvents;
+import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -80,7 +80,7 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         System.out.println("'" + eventListPending.toString() + "'");
         for (Object event : eventListPending) {
             if (eventTypeEssential(event.toString()))
-                EventsEssential.eventEssential(player, (EssentialEvents)event);
+                PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
             
             eventListDone.add(event.toString());
         }

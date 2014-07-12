@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 
-import com.cosmicdan.minecraftempires.playermanagement.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

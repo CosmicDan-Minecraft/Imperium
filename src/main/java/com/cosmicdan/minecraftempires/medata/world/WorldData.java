@@ -1,4 +1,4 @@
-package com.cosmicdan.minecraftempires.datamanagement;
+package com.cosmicdan.minecraftempires.medata.world;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package com.cosmicdan.minecraftempires.playermanagement;
+package com.cosmicdan.minecraftempires.medata.player;
 
 import com.cosmicdan.minecraftempires.Main;
 
@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
-public class EventsEssential {
+public class PlayerEventsEssential {
 
     public enum EssentialEvents {
         FIRSTJOIN, SOMETHING,

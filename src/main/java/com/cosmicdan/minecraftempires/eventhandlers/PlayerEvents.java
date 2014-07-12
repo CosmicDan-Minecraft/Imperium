@@ -3,9 +3,9 @@ package com.cosmicdan.minecraftempires.eventhandlers;
 import java.util.Calendar;
 
 import com.cosmicdan.minecraftempires.Main;
-import com.cosmicdan.minecraftempires.datamanagement.WorldData;
-import com.cosmicdan.minecraftempires.playermanagement.EntityPlayerME;
-import com.cosmicdan.minecraftempires.playermanagement.EventsEssential.EssentialEvents;
+import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
+import com.cosmicdan.minecraftempires.medata.world.WorldData;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
