@@ -48,9 +48,7 @@ public class WorldTickEvents {
     private void globalTicker(WorldTickEvent event) {
         World world = event.world;
         Long timeOfDay = world.getWorldTime() % 24000L;
-        System.out.println(timeOfDay);
         if (timeOfDay == ticksDawn) { // new day has dawned
-            //System.out.println(">>> DAWN!");
             WorldData.worldDay += 1;
             sendGlobalMessage(StatCollector.translateToLocalFormatted("text.newDayDawns", WorldData.worldDay));
         }

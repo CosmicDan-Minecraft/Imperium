@@ -7,26 +7,19 @@ import net.minecraft.world.WorldSavedData;
 public class WorldDataHandler extends WorldSavedData {
     
     private NBTTagCompound worldData = new NBTTagCompound();
-    private String tag;
     
     public WorldDataHandler(String nbtFile) {
         super(nbtFile);
     }
     
-    public void requestTag(String tag) {
-        this.tag = tag;
-    }
-    
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        //System.out.println(">>> Read World Data");
-        worldData = compound.getCompoundTag(tag);
+        worldData = compound.getCompoundTag("global");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        //System.out.println(">>> Write World Data");
-        compound.setTag(tag, worldData);
+        compound.setTag("global", worldData);
     }
     
     public NBTTagCompound getData() {

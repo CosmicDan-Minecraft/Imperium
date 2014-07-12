@@ -58,29 +58,20 @@ public class PlayerData {
             msg = StatCollector.translateToLocal("journal.written");
             // get the current world time
             Long timeNow = world.getTotalWorldTime();
-            // Same the current world time as 'lastLogin' key in this player's NBT 
+            // Save the current world time as 'lastLogin' key in this player's NBT 
             playerDataPersisted.setLong(lastLogin, timeNow);
         } else {
             // this is a returning player. Build/show the welcome text.
             msg = StatCollector.translateToLocalFormatted("text.welcome", entityPlayer.getDisplayName(), WorldData.worldDay);
         }
-        // logic done, actually send the text to chat window
-        //net.minecraft.server.MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new net.minecraft.util.ChatComponentText(msg));
+        // send the text to this players chat
         entityPlayer.addChatMessage(new ChatComponentText(msg));
     }
     
-    // this method is called when a player logs out, and for every player when the server shuts down.
-    //     Has to be void and get all the data from NBT rather than re-using playerdata instance,
-    //     because the server shutdown event is not a player event
-    // TODO: Make this ONlY apply when the server shuts down. We want their days-in-server  
-    //       to continue counting if they leave but the server stays on, so random events 
-    //       can trigger next they return depending on what's happened in the world
     public static void savePlayerData(EntityPlayerMP player) {
         // get data for this player from their NBT
         NBTTagCompound playerData = player.getEntityData();
         playerData = playerData.getCompoundTag(EntityPlayerMP.PERSISTED_NBT_TAG);
-        // 'How many days they've played in this server before' is 0 for new players
-        Long dayRawLast = 0L;
         // clear the newbie flag if required
         if (playerData.getBoolean(firstJoin)) {
             playerData.setBoolean(firstJoin, false);

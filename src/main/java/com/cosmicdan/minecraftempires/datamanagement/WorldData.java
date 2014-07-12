@@ -12,16 +12,13 @@ public class WorldData {
         
     }
     
-    public void loadData(World world, String nbtFile, String tag) {
+    public void loadData(World world, String nbtFile) {
         if (worldDataFile == null) {
             worldDataFile = (WorldDataHandler) world.mapStorage.loadData(WorldDataHandler.class, nbtFile);
             if (worldDataFile == null) {
                 worldDataFile = new WorldDataHandler(nbtFile);
-                worldDataFile.requestTag(tag);
                 world.mapStorage.setData(nbtFile, worldDataFile);
-            } //else {
-            //    NBTTagCompound compound = worldDataFile.getData();
-            //}
+            }
         }
     }
     
@@ -29,7 +26,7 @@ public class WorldData {
         return worldDataFile.getData();
     }
     
-    public void commit() {
+    public void commitAll() {
         worldDataFile.markDirty();
     }
 }

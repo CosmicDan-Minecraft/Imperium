@@ -3,6 +3,7 @@ package com.cosmicdan.minecraftempires.eventhandlers;
 import com.cosmicdan.minecraftempires.datamanagement.WorldData;
 import com.cosmicdan.minecraftempires.datamanagement.WorldDataHandler;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
@@ -12,7 +13,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class WorldEvents {
     
     private WorldData worldData;
-    //private NBTTagCompound worldDataGlobal;
+    private NBTTagCompound worldDataGlobal;
     
     public WorldEvents() {
         
@@ -25,13 +26,13 @@ public class WorldEvents {
         if (!world.isRemote) {
             // ensure it's the overworld for global data
             if (world.provider.dimensionId == 0) {
-                // write some initial values where required
                 worldData = new WorldData(); 
-                worldData.loadData(world, "MinecraftEmpires", "global");
-                if (!worldData.getData().hasKey("worldDay")) {
-                    writeInitialSettings(world, worldData, "global");
+                worldData.loadData(world, "MinecraftEmpires");
+                worldDataGlobal = worldData.getData();
+                if (worldDataGlobal.getLong("lastSave") == 0L) {
+                    doInitialSettings(world, "global");
                 } else {
-                    loadSettings(world, worldData, "global");
+                    loadSettings(world, "global");
                 }
             }
         }
@@ -42,25 +43,29 @@ public class WorldEvents {
         World world = event.world;
         // ensure it's the server
         if (!world.isRemote) {
-            // ensure it's the overworld for global data
             if (world.provider.dimensionId == 0) {
-                //System.out.println("Saving data");
-                worldData.getData().setLong("lastSave", world.getTotalWorldTime());
-                worldData.getData().setInteger("worldDay", WorldData.worldDay);
-                //worldData.commit();
+                saveSettings(world, "global");
             }
         }
     }
     
-    private void writeInitialSettings(World world, WorldData worldData, String tag) {
+    private void doInitialSettings(World world, String tag) {
         if (tag == "global") {
             WorldData.worldDay = 1;
         }
     }
     
-    private void loadSettings(World world, WorldData worldData, String tag) {
+    private void loadSettings(World world, String tag) {
         if (tag == "global") {
-            WorldData.worldDay = worldData.getData().getInteger("worldDay");
+            WorldData.worldDay = worldDataGlobal.getInteger("worldDay");
+        }
+    }
+    
+    private void saveSettings(World world, String tag) {
+        if (tag == "global") {
+            worldDataGlobal.setLong("lastSave", world.getTotalWorldTime());
+            worldDataGlobal.setInteger("worldDay", WorldData.worldDay);
+            worldData.commitAll();
         }
     }
 }
