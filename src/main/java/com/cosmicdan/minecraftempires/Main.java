@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.cosmicdan.minecraftempires.blocks.BlockBrushwood;
-import com.cosmicdan.minecraftempires.datamanagement.PlayerData;
 import com.cosmicdan.minecraftempires.eventhandlers.BlockEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.PlayerEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
@@ -97,6 +96,7 @@ public class Main
         // something
     }
     
+    /*
     @EventHandler
     public void onServerStopping(FMLServerStoppingEvent event) {
         // Save & Quit for integrated server only
@@ -109,10 +109,9 @@ public class Main
             for(int i = 0; i < allNames.length; i++) {
                 // func_152612_a = getPlayerForUsername
                 EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
-                PlayerData.savePlayerData((EntityPlayerMP)player);
             }
         }
     }
-    
+    */
     
 }

@@ -3,8 +3,9 @@ package com.cosmicdan.minecraftempires.eventhandlers;
 import java.util.Calendar;
 
 import com.cosmicdan.minecraftempires.Main;
-import com.cosmicdan.minecraftempires.datamanagement.PlayerData;
+import com.cosmicdan.minecraftempires.datamanagement.WorldData;
 import com.cosmicdan.minecraftempires.playermanagement.EntityPlayerME;
+import com.cosmicdan.minecraftempires.playermanagement.EventsEssential.EssentialEvents;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -12,6 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
@@ -23,19 +26,18 @@ public class PlayerEvents {
     // other events of interest not yet used: onPlayerChangedDimension and onPlayerRespawn
     
     @SubscribeEvent
-    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) { 
-        EntityPlayerMP player = (EntityPlayerMP)event.player;
-        PlayerData playerData = new PlayerData(player);
-        // TODO: I think this should only be run on client, I18n causes dedicated server to crash 
-        //       not sure if that's a Forge bug or if there is a better way for string formatting...
-        playerData.welcome();
+    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        EntityPlayerME playerME = EntityPlayerME.get((EntityPlayerMP)event.player);
+        if (!playerME.hasData) {
+            playerME.addEvent(EssentialEvents.FIRSTJOIN);
+            playerME.eventPending = true;
+        }
+        String msg = StatCollector.translateToLocalFormatted("text.welcome", event.player.getDisplayName(), WorldData.worldDay);
+        event.player.addChatMessage(new ChatComponentText(msg));
+        
     }
     
     @SubscribeEvent
     public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        // DISABLED. We only want player data to save when the server shuts down!
-        // TODO: But is this safe? No, if the server crashes a lot could be lost.
-        //PlayerData.savePlayerData((EntityPlayerMP)event.player);
     }
-    
 }

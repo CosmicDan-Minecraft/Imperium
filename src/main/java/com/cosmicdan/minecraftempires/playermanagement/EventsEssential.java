@@ -10,7 +10,7 @@ import net.minecraft.util.StatCollector;
 public class EventsEssential {
 
     public enum EssentialEvents {
-        FIRSTJOIN,
+        FIRSTJOIN, SOMETHING,
     }
     
     public static void eventEssential(EntityPlayerMP player, EssentialEvents event) {
