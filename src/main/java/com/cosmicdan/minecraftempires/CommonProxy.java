@@ -1,6 +1,7 @@
 package com.cosmicdan.minecraftempires;
 
 import com.cosmicdan.minecraftempires.eventhandlers.BlockEvents;
+import com.cosmicdan.minecraftempires.eventhandlers.EntityEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.WorldTickEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.WorldEvents;
 
@@ -28,8 +29,8 @@ public class CommonProxy {
     
     
     public void postInit(FMLPostInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new EntityEvents());
         MinecraftForge.EVENT_BUS.register(new WorldEvents());
-        // register the World tick events class
         FMLCommonHandler.instance().bus().register(new WorldTickEvents());
     }
     
