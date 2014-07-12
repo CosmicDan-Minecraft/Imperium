@@ -13,8 +13,8 @@ public class PlayerData {
     
     // These strings determine the names of the NBT tags for each player
     private static final String firstJoin = "minecraftempires.firstjoin";
-    private static final String lastLogin = "minecraftempires.lastLogin";
-    private static final String lastLogout = "minecraftempires.lastLogout";
+    //private static final String lastLogin = "minecraftempires.lastLogin";
+    //private static final String lastLogout = "minecraftempires.lastLogout";
     
     // declare some global variables or "fields" for this instance, this is important. If this makes no sense, learn Java :)
     public Boolean isNewPlayer = false;
@@ -52,19 +52,8 @@ public class PlayerData {
         // get the world object
         World world = entityPlayer.worldObj;
         // initialize string for welcome message
-        String msg = "";
-        if (isNewPlayer) {
-            // they are a new player - set welcome text to "You have written in your journal", indicating the player should check it!
-            msg = StatCollector.translateToLocal("journal.written");
-            // get the current world time
-            Long timeNow = world.getTotalWorldTime();
-            // Save the current world time as 'lastLogin' key in this player's NBT 
-            playerDataPersisted.setLong(lastLogin, timeNow);
-        } else {
-            // this is a returning player. Build/show the welcome text.
-            msg = StatCollector.translateToLocalFormatted("text.welcome", entityPlayer.getDisplayName(), WorldData.worldDay);
-        }
-        // send the text to this players chat
+        String msg = StatCollector.translateToLocalFormatted("text.welcome", entityPlayer.getDisplayName(), WorldData.worldDay);
+        // actually send it
         entityPlayer.addChatMessage(new ChatComponentText(msg));
     }
     

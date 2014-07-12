@@ -3,5 +3,5 @@ item.Brushwood.name=Brushwood
 item.Journal.name=Journal
 
 journal.written=You have written in your Journal...
-text.welcome=Welcome back %s, it is day %s.
+text.welcome=Welcome %s, it is day %s.
 text.newDayDawns=Day %s dawns!
