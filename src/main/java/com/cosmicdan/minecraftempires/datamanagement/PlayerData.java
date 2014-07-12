@@ -2,10 +2,11 @@ package com.cosmicdan.minecraftempires.datamanagement;
 
 import com.cosmicdan.minecraftempires.Main;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class PlayerData {
@@ -14,9 +15,6 @@ public class PlayerData {
     private static final String firstJoin = "minecraftempires.firstjoin";
     private static final String lastLogin = "minecraftempires.lastLogin";
     private static final String lastLogout = "minecraftempires.lastLogout";
-    private static final String playerDaysRaw = "minecraftempires.playerDaysRaw";
-    private static final String playerDaysDouble = "minecraftempires.playerDaysDouble";
-    private static final String playerDay = "minecraftempires.playerDay";
     
     // declare some global variables or "fields" for this instance, this is important. If this makes no sense, learn Java :)
     public Boolean isNewPlayer = false;
@@ -57,17 +55,18 @@ public class PlayerData {
         String msg = "";
         if (isNewPlayer) {
             // they are a new player - set welcome text to "You have written in your journal", indicating the player should check it!
-            msg = I18n.format("journal.written");
+            msg = StatCollector.translateToLocal("journal.written");
             // get the current world time
             Long timeNow = world.getTotalWorldTime();
             // Same the current world time as 'lastLogin' key in this player's NBT 
             playerDataPersisted.setLong(lastLogin, timeNow);
         } else {
-            // this is a returning player. Show the welcome text.
-            msg = I18n.format("text.welcome", entityPlayer.getDisplayName(), playerDataPersisted.getInteger(playerDay));
+            // this is a returning player. Build/show the welcome text.
+            msg = StatCollector.translateToLocalFormatted("text.welcome", entityPlayer.getDisplayName(), WorldData.worldDay);
         }
         // logic done, actually send the text to chat window
-        net.minecraft.server.MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new net.minecraft.util.ChatComponentText(msg));
+        //net.minecraft.server.MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new net.minecraft.util.ChatComponentText(msg));
+        entityPlayer.addChatMessage(new ChatComponentText(msg));
     }
     
     // this method is called when a player logs out, and for every player when the server shuts down.
@@ -85,22 +84,6 @@ public class PlayerData {
         // clear the newbie flag if required
         if (playerData.getBoolean(firstJoin)) {
             playerData.setBoolean(firstJoin, false);
-        } else {
-            // they're not a new player, load their real value for days spent here
-            dayRawLast = playerData.getLong(playerDaysRaw);
         }
-        // get current world time
-        Long timeNow = player.worldObj.getTotalWorldTime();
-        // save their current logout time
-        playerData.setLong(lastLogout, timeNow);
-        // calculate how long the player has been in this world by adding this world session lenth to the players' previous value
-        Long dayRawNew = playerData.getLong(playerDaysRaw) + timeNow - (playerData.getLong(lastLogin));
-        // save the total life length of this player in the world
-        playerData.setLong(playerDaysRaw, dayRawNew);
-        // save the total life length of this player in the world as 'current day number' in double format (a large decimal number)
-        Double playerDays = (double) (dayRawNew / 24000);
-        playerData.setDouble(playerDaysDouble, playerDays);
-        // save the actual day number the player is on by rounding *down* and adding one 
-        playerData.setInteger(playerDay, (int) Math.floor(playerDays) + 1);
     }
 }

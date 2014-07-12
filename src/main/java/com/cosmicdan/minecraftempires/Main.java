@@ -15,6 +15,7 @@ import com.google.common.eventbus.Subscribe;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -25,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -54,7 +56,7 @@ public class Main
     @Instance(value = MODID)
     public static Main instance;
     
-    @SidedProxy(clientSide="com.cosmicdan.minecraftempires.client.ClientProxy", serverSide="com.cosmicdan.minecraftempires.server.ServerProxy")
+    @SidedProxy(clientSide="com.cosmicdan.minecraftempires.client.ClientProxy", serverSide="com.cosmicdan.minecraftempires.server.CommonProxy")
     public static CommonProxy proxy;
     
     @EventHandler
@@ -78,6 +80,8 @@ public class Main
         
         // hook events for blocks
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
+        
+        proxy.preInit(event);
     }
     
     @EventHandler
@@ -89,7 +93,8 @@ public class Main
     
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-            // something
+        proxy.postInit(event);
+        // something
     }
     
     @EventHandler
