@@ -10,12 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 // This is the Journal item. Self-explanatory.
-public class ItemJournal extends Item {
-    public ItemJournal() {
+public class ItemPlayerLog extends Item {
+    public ItemPlayerLog() {
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.tabMisc);
-        setUnlocalizedName("Journal");
-        setTextureName("minecraftempires:journal");
+        setUnlocalizedName("PlayerLog");
+        setTextureName("minecraftempires:playerlog");
     }
     
     @Override

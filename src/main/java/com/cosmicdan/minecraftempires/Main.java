@@ -8,7 +8,7 @@ import com.cosmicdan.minecraftempires.eventhandlers.BlockEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.PlayerEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
 import com.cosmicdan.minecraftempires.items.ItemBrushwood;
-import com.cosmicdan.minecraftempires.items.ItemJournal;
+import com.cosmicdan.minecraftempires.items.ItemPlayerLog;
 import com.cosmicdan.minecraftempires.recipes.ShapelessRecipes;
 import com.google.common.eventbus.Subscribe;
 
@@ -50,7 +50,7 @@ public class Main
     // new blocks/items
     public static Block blockBrushwood;
     public static Item itemBrushwood;
-    public static Item itemJournal;
+    public static Item itemPlayerLog;
     
     @Instance(value = MODID)
     public static Main instance;
@@ -65,8 +65,8 @@ public class Main
         GameRegistry.registerBlock(blockBrushwood, "blockBrushwood");
         itemBrushwood = new ItemBrushwood();
         GameRegistry.registerItem(itemBrushwood, "itemBrushwood");
-        itemJournal = new ItemJournal();
-        GameRegistry.registerItem(itemJournal, "itemJournal");
+        itemPlayerLog = new ItemPlayerLog();
+        GameRegistry.registerItem(itemPlayerLog, "itemPlayerLog");
         
         // recipes
         ShapelessRecipes.RecipeShelter();

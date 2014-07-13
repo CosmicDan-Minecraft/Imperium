@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.cosmicdan.minecraftempires.CommonProxy;
-import com.cosmicdan.minecraftempires.client.gui.GuiJournalBook;
+import com.cosmicdan.minecraftempires.client.gui.GuiLog;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -31,6 +31,6 @@ public class ClientProxy extends CommonProxy {
     public void openJournal() {
         // client-only hook command for when user presses right-click on their Journal (called from the Journal item class)
         // remember - getMinecraft() only exists in the client!
-        Minecraft.getMinecraft().displayGuiScreen(new GuiJournalBook());
+        Minecraft.getMinecraft().displayGuiScreen(new GuiLog());
     }
 }

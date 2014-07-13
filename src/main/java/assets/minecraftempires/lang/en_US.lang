@@ -1,7 +1,8 @@
 tile.Brushwood.name=Brushwood
 item.Brushwood.name=Brushwood
-item.Journal.name=Journal
+item.PlayerLog.name=Log
 
-journal.written=You have written in your Journal...
+playerlog.found=You have found some scrap bark to write on...
+playerlog.written=You have written on your Log...
 text.welcome=Welcome %s, it is day %s.
 text.newDayDawns=Day %s dawns!

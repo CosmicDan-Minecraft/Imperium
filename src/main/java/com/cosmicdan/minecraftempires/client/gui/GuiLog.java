@@ -11,13 +11,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 
 // this class is responsible for drawing the "Journal" GUI. Still a work in progress, doesn't do anything except look like ass
-public class GuiJournalBook extends GuiScreen {
+public class GuiLog extends GuiScreen {
     static final ResourceLocation texture = new ResourceLocation("minecraft:textures/gui/book.png");
     
     private static final int BUTTON_CLOSE = 0;
 
-    public GuiJournalBook() {
-        // construct data for the book contents here. 
+    public GuiLog() {
+        // construct data for the contents here. 
     }
     
     // draw the book GUI background/frame
