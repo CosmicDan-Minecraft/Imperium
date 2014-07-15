@@ -28,9 +28,9 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     
     public Boolean hasData = false;
     public Boolean eventPending = false;
-    public ArrayList eventListPending = new ArrayList(0);
-    public ArrayList eventListPendingInstant = new ArrayList(0);
-    public ArrayList eventListDone = new ArrayList(0);
+    public ArrayList eventListPending = new ArrayList();
+    public ArrayList eventListPendingInstant = new ArrayList();
+    public ArrayList eventListDone = new ArrayList();
     public Long lastLogin, lastSave = 0L;
     
     public EntityPlayerME(EntityPlayerMP player) {
@@ -113,7 +113,6 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     private void doEventInternalProc(Object event) {
         if (eventTypeEssential(event.toString()))
             PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
-        
         eventListDone.add(event.toString() + "=" + WorldData.worldDay);
     }
     
@@ -125,13 +124,16 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
         for (String event : list) {
             if (event.isEmpty()) break;
+            // cut the day off the end
+            int eventDoneDay = Integer.parseInt(event.substring(event.indexOf("=") + 1));
+            event = event.replace("=" + eventDoneDay, "");
             if (eventTypeEssential(event))
-                retval.add(EssentialEvents.valueOf(event));
+                retval.add(EssentialEvents.valueOf(event) + "=" + eventDoneDay);
         }
         return retval;
     }
     
-    private static Boolean eventTypeEssential(String event) {
+    public static Boolean eventTypeEssential(String event) {
         for (EssentialEvents essentialEvent : EssentialEvents.values()) {
             if(essentialEvent.toString().contains(event.toString())) {
                 return true;

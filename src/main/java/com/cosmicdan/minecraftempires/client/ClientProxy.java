@@ -1,10 +1,12 @@
 package com.cosmicdan.minecraftempires.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.cosmicdan.minecraftempires.CommonProxy;
 import com.cosmicdan.minecraftempires.client.gui.GuiLog;
+import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -28,9 +30,9 @@ public class ClientProxy extends CommonProxy {
     }
     
     @Override
-    public void openJournal() {
+    public void openJournal(EntityPlayer player) {
         // client-only hook command for when user presses right-click on their Journal (called from the Journal item class)
         // remember - getMinecraft() only exists in the client!
-        Minecraft.getMinecraft().displayGuiScreen(new GuiLog());
+        Minecraft.getMinecraft().displayGuiScreen(new GuiLog(player));
     }
 }

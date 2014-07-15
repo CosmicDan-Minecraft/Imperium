@@ -18,7 +18,9 @@ public class NiceText {
     private Fonts font;
     private int maxWidth;
     private int maxHeight;
-    public List<String> text = new ArrayList<String>();
+    public int lineHeight;
+    public List<List<String>> pageData = new ArrayList<List<String>>();
+    private List<String> pageLines = new ArrayList<String>();
     
     public NiceText (String string, NiceText.Fonts font, int maxWidth, int maxHeight) {
         this.font = font;
@@ -27,6 +29,7 @@ public class NiceText {
                 // note that int division simply discards decimals (i.e. rounds-down) 
                 this.maxWidth = maxWidth / 6;
                 this.maxHeight = maxHeight / 9;
+                this.lineHeight = 9;
                 break;
         }
         buildNiceTextList(string);
@@ -34,21 +37,18 @@ public class NiceText {
     
     private void buildNiceTextList(String input) {
         String[] wrapped = splitIntoLine(input, maxWidth);
-        String pageContent = "";
         int lineThisPage = 0;
         int lineTotal = 0;
         for (String line : wrapped) {
             lineThisPage++;
             lineTotal++;
-            pageContent += line + "\n";
-            if (lineThisPage == maxHeight) {
-                text.add(pageContent);
+            //pageContent += line + "\n";
+            pageLines.add(line);
+            if (lineThisPage == maxHeight || lineTotal == wrapped.length) {
+                pageData.add(pageLines);
                 //System.out.println("-------------");
-                pageContent = "";
+                pageLines = new ArrayList<String>();
                 lineThisPage = 0;
-            } else if (lineTotal == wrapped.length) { 
-                // also add the last page when done, if there's anything left
-                text.add(pageContent);
             }
         }
     }

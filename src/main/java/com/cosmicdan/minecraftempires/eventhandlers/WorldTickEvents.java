@@ -93,7 +93,7 @@ public class WorldTickEvents {
         String allNames[] = mc.getAllUsernames().clone();
         for(int i = 0; i < allNames.length; i++) {
             // func_152612_a = getPlayerForUsername
-            EntityPlayerMP thisPlayer = (EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
+            EntityPlayerMP thisPlayer = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
             EntityPlayerME playerME = EntityPlayerME.get(thisPlayer);
             if (playerME.eventPending)
                 playerME.doEvents();
@@ -108,7 +108,7 @@ public class WorldTickEvents {
         allNames = eventPendingInstantUsers.toArray(allNames);
         for(int i = 0; i < allNames.length; i++) {
             // func_152612_a = getPlayerForUsername
-            EntityPlayerMP thisPlayer = (EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
+            EntityPlayerMP thisPlayer = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
             // TODO: Ensure they're currently in-world, and heck if this is a valid playername (just in case)
             EntityPlayerME playerME = EntityPlayerME.get(thisPlayer);
             playerME.doInstantEvents();
