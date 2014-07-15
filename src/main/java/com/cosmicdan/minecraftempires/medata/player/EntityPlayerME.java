@@ -9,6 +9,7 @@ import org.apache.commons.lang3.EnumUtils;
 
 import com.cosmicdan.minecraftempires.eventhandlers.WorldTickEvents;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
+import com.cosmicdan.minecraftempires.medata.world.WorldData;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -113,7 +114,7 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         if (eventTypeEssential(event.toString()))
             PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
         
-        eventListDone.add(event.toString());
+        eventListDone.add(event.toString() + "=" + WorldData.worldDay);
     }
     
     /*
@@ -137,5 +138,12 @@ public class EntityPlayerME implements IExtendedEntityProperties {
             }
         }
         return false;
+    }
+    
+    private static void notifyPlayerOfEvent(EntityPlayerMP player, int tier) {
+        if (tier == 1) { // Primal age, "Player Log"
+            String writtenToLog = StatCollector.translateToLocal("playerlog.written");
+            player.addChatComponentMessage(new ChatComponentText(writtenToLog));
+        }
     }
 }

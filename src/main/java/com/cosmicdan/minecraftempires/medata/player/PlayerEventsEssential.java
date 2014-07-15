@@ -14,19 +14,18 @@ public class PlayerEventsEssential {
     }
     
     public static void eventEssential(EntityPlayerMP player, EssentialEvents event) {
+        EntityPlayerME playerME = EntityPlayerME.get(player);
         switch (event){
         case FIRSTJOIN:
-            player.inventory.addItemStackToInventory(new ItemStack(Main.itemPlayerLog));
             // we don't use notifyPlayerOfEvent here because it's special
             String gotPlayerLog = StatCollector.translateToLocal("playerlog.found");
             player.addChatComponentMessage(new ChatComponentText(gotPlayerLog));
+            // give them the log item
+            player.inventory.addItemStackToInventory(new ItemStack(Main.itemPlayerLog));
         }
     }
     
-    private static void notifyPlayerOfEvent(EntityPlayerMP player, int tier) {
-        if (tier == 1) { // Primal age, "Player Log"
-            String writtenToLog = StatCollector.translateToLocal("playerlog.written");
-            player.addChatComponentMessage(new ChatComponentText(writtenToLog));
-        }
+    public static String getEventDesc() {
+        return "";
     }
 }
