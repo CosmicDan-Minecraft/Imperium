@@ -12,8 +12,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldEvents {
     
-    private WorldData worldData;
-    private NBTTagCompound worldDataGlobal;
+    private static WorldData worldData;
+    private static NBTTagCompound worldDataGlobal;
     
     public WorldEvents() {
         
@@ -61,7 +61,7 @@ public class WorldEvents {
         }
     }
     
-    private void saveSettings(World world, String tag) {
+    public static void saveSettings(World world, String tag) {
         if (tag == "global") {
             worldDataGlobal.setLong("lastSave", world.getTotalWorldTime());
             worldDataGlobal.setInteger("worldDay", WorldData.worldDay);

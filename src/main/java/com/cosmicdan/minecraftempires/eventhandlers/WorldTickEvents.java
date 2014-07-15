@@ -72,6 +72,7 @@ public class WorldTickEvents {
         if (timeOfDay == ticksDawn) { // new day has dawned
             WorldData.worldDay += 1;
             sendGlobalMessage(StatCollector.translateToLocalFormatted("text.newDayDawns", WorldData.worldDay));
+            WorldEvents.saveSettings(world, "global");
         }
         doPlayerEvents();
     }
