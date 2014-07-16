@@ -11,6 +11,7 @@ import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class ClientProxy extends CommonProxy {
     
@@ -34,5 +35,20 @@ public class ClientProxy extends CommonProxy {
         // client-only hook command for when user presses right-click on their Journal (called from the Journal item class)
         // remember - getMinecraft() only exists in the client!
         Minecraft.getMinecraft().displayGuiScreen(new GuiLog(player));
+    }
+    
+    @Override
+    public EntityPlayer getPlayerFromMessageContext(MessageContext ctx) {
+        switch(ctx.side) {
+            case CLIENT:
+                EntityPlayer entityClientPlayerMP = Minecraft.getMinecraft().thePlayer;
+                return entityClientPlayerMP;
+            case SERVER:
+                EntityPlayer entityPlayerMP = ctx.getServerHandler().playerEntity;
+                return entityPlayerMP;
+            default:
+                assert false : "Invalid side in TestMsgHandler: " + ctx.side;
+        }
+        return null;
     }
 }

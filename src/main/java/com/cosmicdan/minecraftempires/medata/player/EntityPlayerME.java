@@ -10,8 +10,11 @@ import org.apache.commons.lang3.EnumUtils;
 import com.cosmicdan.minecraftempires.eventhandlers.WorldTickEvents;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
+import com.cosmicdan.minecraftempires.server.PacketHandler;
+import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -46,6 +49,10 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         return (EntityPlayerME) player.getExtendedProperties(EXT_PROP_NAME);
     }
     
+    public static final EntityPlayerME getRemote(EntityPlayer player) {
+        return (EntityPlayerME) player.getExtendedProperties(EXT_PROP_NAME);
+    }
+    
     @Override
     public void saveNBTData(NBTTagCompound playerData) {
         NBTTagCompound playerProps = new NBTTagCompound();
@@ -65,18 +72,18 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         this.hasData = playerProps.getBoolean("hasData");
         if (!hasData) return;
         this.eventPending = playerProps.getBoolean("eventPending");
-        this.eventListPending = nbtStringToArrayList(playerProps.getString("eventListPending"));
-        this.eventListPendingInstant = nbtStringToArrayList(playerProps.getString("eventListPendingInstant"));
+        this.eventListPending = stringToArrayList(playerProps.getString("eventListPending"));
+        this.eventListPendingInstant = stringToArrayList(playerProps.getString("eventListPendingInstant"));
         if (this.eventListPendingInstant.size() > 0) {
             //System.out.println(">>> Player has pending events!");
             WorldTickEvents.eventPendingInstant = true;
             WorldTickEvents.addPlayerToPendingInstants(player);
-        } else {
+        } //else {
             //System.out.println("<<< Player does NOT have pending events!");
             // this is probably not necessary, might be better to check the actual NBT tag first instead
-            eventListPendingInstant = new ArrayList(0);
-        }
-        this.eventListDone = nbtStringToArrayList(playerProps.getString("eventListDone"));
+            //eventListPendingInstant = new ArrayList(0);
+        //}
+        this.eventListDone = stringToArrayList(playerProps.getString("eventListDone"));
         this.lastLogin = player.worldObj.getTotalWorldTime();
         this.lastSave = playerProps.getLong("lastSave");
     }
@@ -114,12 +121,17 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         if (eventTypeEssential(event.toString()))
             PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
         eventListDone.add(event.toString() + "=" + WorldData.worldDay);
+        sync();
+    }
+    
+    public void sync() {
+        PacketHandler.packetReqest.sendTo(new SyncPlayerME(player), (EntityPlayerMP) player);
     }
     
     /*
      * helpers
      */
-    private static ArrayList nbtStringToArrayList(String s) {
+    public static ArrayList stringToArrayList(String s) {
         ArrayList retval = new ArrayList(0);
         List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
         for (String event : list) {

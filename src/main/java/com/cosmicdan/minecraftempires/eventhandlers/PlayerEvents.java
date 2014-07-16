@@ -36,7 +36,7 @@ public class PlayerEvents {
         }
         String msg = StatCollector.translateToLocalFormatted("text.welcome", event.player.getDisplayName(), WorldData.worldDay);
         event.player.addChatMessage(new ChatComponentText(msg));
-        
+        playerME.sync();
     }
     
     @SubscribeEvent
