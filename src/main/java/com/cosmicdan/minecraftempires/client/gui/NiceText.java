@@ -42,11 +42,9 @@ public class NiceText {
         for (String line : wrapped) {
             lineThisPage++;
             lineTotal++;
-            //pageContent += line + "\n";
             pageLines.add(line);
             if (lineThisPage == maxHeight || lineTotal == wrapped.length) {
                 pageData.add(pageLines);
-                //System.out.println("-------------");
                 pageLines = new ArrayList<String>();
                 lineThisPage = 0;
             }

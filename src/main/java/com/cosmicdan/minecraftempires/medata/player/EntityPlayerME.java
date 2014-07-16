@@ -27,7 +27,7 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     
     public final static String EXT_PROP_NAME = "MinecraftEmpiresPlayer";
     //public final static String EXT_PROP_LASTLOGIN = "lastLogin";
-    private final EntityPlayerMP player;
+    private final EntityPlayer player;
     
     public Boolean hasData = false;
     public Boolean eventPending = false;
@@ -36,20 +36,15 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     public ArrayList eventListDone = new ArrayList();
     public Long lastLogin, lastSave = 0L;
     
-    public EntityPlayerME(EntityPlayerMP player) {
+    public EntityPlayerME(EntityPlayer player) {
         this.player = player;
     }
     
-    public static final void register(EntityPlayerMP player) {
-        //System.out.println(">>> New EntityPlayerME!");
+    public static final void register(EntityPlayer player) {
         player.registerExtendedProperties(EntityPlayerME.EXT_PROP_NAME, new EntityPlayerME(player));
     }
     
-    public static final EntityPlayerME get(EntityPlayerMP player) {
-        return (EntityPlayerME) player.getExtendedProperties(EXT_PROP_NAME);
-    }
-    
-    public static final EntityPlayerME getRemote(EntityPlayer player) {
+    public static final EntityPlayerME get(EntityPlayer player) {
         return (EntityPlayerME) player.getExtendedProperties(EXT_PROP_NAME);
     }
     
@@ -77,12 +72,8 @@ public class EntityPlayerME implements IExtendedEntityProperties {
         if (this.eventListPendingInstant.size() > 0) {
             //System.out.println(">>> Player has pending events!");
             WorldTickEvents.eventPendingInstant = true;
-            WorldTickEvents.addPlayerToPendingInstants(player);
-        } //else {
-            //System.out.println("<<< Player does NOT have pending events!");
-            // this is probably not necessary, might be better to check the actual NBT tag first instead
-            //eventListPendingInstant = new ArrayList(0);
-        //}
+            WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)player);
+        }
         this.eventListDone = stringToArrayList(playerProps.getString("eventListDone"));
         this.lastLogin = player.worldObj.getTotalWorldTime();
         this.lastSave = playerProps.getLong("lastSave");
@@ -119,13 +110,13 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     
     private void doEventInternalProc(Object event) {
         if (eventTypeEssential(event.toString()))
-            PlayerEventsEssential.eventEssential(player, (EssentialEvents)event);
+            PlayerEventsEssential.eventEssential((EntityPlayerMP)player, (EssentialEvents)event);
         eventListDone.add(event.toString() + "=" + WorldData.worldDay);
         sync();
     }
     
     public void sync() {
-        PacketHandler.packetReqest.sendTo(new SyncPlayerME(player), (EntityPlayerMP) player);
+        PacketHandler.packetReq.sendTo(new SyncPlayerME(player), (EntityPlayerMP)player);
     }
     
     /*

@@ -109,7 +109,7 @@ public class WorldTickEvents {
         for(int i = 0; i < allNames.length; i++) {
             // func_152612_a = getPlayerForUsername
             EntityPlayerMP thisPlayer = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
-            // TODO: Ensure they're currently in-world, and heck if this is a valid playername (just in case)
+            // TODO: Ensure they're currently in-world, and check if this is a valid playername (just in case)
             EntityPlayerME playerME = EntityPlayerME.get(thisPlayer);
             playerME.doInstantEvents();
         }

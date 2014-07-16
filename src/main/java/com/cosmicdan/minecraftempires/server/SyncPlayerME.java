@@ -17,16 +17,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMessage> {
 
-    private EntityPlayerME playerME;
     public String eventListDone;
     
     public SyncPlayerME() {
         
     }
 
-    public SyncPlayerME(EntityPlayerMP player) {
-        playerME = EntityPlayerME.get(player);
-        this.eventListDone = playerME.eventListDone.toString();
+    public SyncPlayerME(EntityPlayer player) {
+        EntityPlayerME playerME = EntityPlayerME.get(player);
+        eventListDone = playerME.eventListDone.toString();
     }
 
     // fromBytes loads the data into the class ready for sending
@@ -38,7 +37,7 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
     // toBytes is for sending a packet/request (in this case, server to the client)
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, eventListDone);
+        ByteBufUtils.writeUTF8String(buf, this.eventListDone);
     }
 
     // onMessage is called after the data is received i.e. we "assign" the packet/message data here
@@ -47,7 +46,7 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
         if (ctx.side == Side.CLIENT) {
             EntityPlayer player = Main.proxy.getPlayerFromMessageContext(ctx);
             if ( player != null) {
-                playerME = EntityPlayerME.getRemote(player);
+                EntityPlayerME playerME = EntityPlayerME.get(player);
                 if (playerME != null ) {
                     playerME.eventListDone = EntityPlayerME.stringToArrayList(msg.eventListDone);
                 }

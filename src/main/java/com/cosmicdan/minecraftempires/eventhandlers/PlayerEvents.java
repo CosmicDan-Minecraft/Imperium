@@ -6,6 +6,8 @@ import com.cosmicdan.minecraftempires.Main;
 import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
+import com.cosmicdan.minecraftempires.server.PacketHandler;
+import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -27,7 +29,7 @@ public class PlayerEvents {
     
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        EntityPlayerME playerME = EntityPlayerME.get((EntityPlayerMP)event.player);
+        EntityPlayerME playerME = EntityPlayerME.get(event.player);
         if (!playerME.hasData) {
             playerME.addInstantEvent(EssentialEvents.FIRSTJOIN);
             //playerME.eventPending = true;
