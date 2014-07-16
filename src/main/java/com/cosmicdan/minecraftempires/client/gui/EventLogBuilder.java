@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import net.minecraft.util.StatCollector;
 
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
 public class EventLogBuilder {
     // TODO: Only get the latest x events (configurable) otherwise the player
@@ -15,13 +15,13 @@ public class EventLogBuilder {
     private int eventDayCurrent = 0;
     
     
-    public EventLogBuilder(EntityPlayerME player) {
+    public EventLogBuilder(MinecraftEmpiresPlayer player) {
         // iterate all done events for this player
         String[] eventListDone = Arrays.copyOf(player.eventListDone.toArray(), player.eventListDone.size(), String[].class);
         for (String eventDone : eventListDone) {
             int eventDoneDay = Integer.parseInt(eventDone.substring(eventDone.indexOf("=") + 1));
             String event = eventDone.replace("=" + eventDoneDay, "");
-            if (EntityPlayerME.eventTypeEssential(event))
+            if (MinecraftEmpiresPlayer.eventTypeEssential(event))
                 addToEventLog("ESSENTIAL", event, eventDoneDay);
         }
     }

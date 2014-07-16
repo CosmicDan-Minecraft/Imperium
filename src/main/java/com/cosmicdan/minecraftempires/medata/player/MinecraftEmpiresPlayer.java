@@ -23,7 +23,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
-public class EntityPlayerME implements IExtendedEntityProperties {
+public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     
     public final static String EXT_PROP_NAME = "MinecraftEmpiresPlayer";
     //public final static String EXT_PROP_LASTLOGIN = "lastLogin";
@@ -36,16 +36,16 @@ public class EntityPlayerME implements IExtendedEntityProperties {
     public ArrayList eventListDone = new ArrayList();
     public Long lastLogin, lastSave = 0L;
     
-    public EntityPlayerME(EntityPlayer player) {
+    public MinecraftEmpiresPlayer(EntityPlayer player) {
         this.player = player;
     }
     
     public static final void register(EntityPlayer player) {
-        player.registerExtendedProperties(EntityPlayerME.EXT_PROP_NAME, new EntityPlayerME(player));
+        player.registerExtendedProperties(MinecraftEmpiresPlayer.EXT_PROP_NAME, new MinecraftEmpiresPlayer(player));
     }
     
-    public static final EntityPlayerME get(EntityPlayer player) {
-        return (EntityPlayerME) player.getExtendedProperties(EXT_PROP_NAME);
+    public static final MinecraftEmpiresPlayer get(EntityPlayer player) {
+        return (MinecraftEmpiresPlayer) player.getExtendedProperties(EXT_PROP_NAME);
     }
     
     @Override

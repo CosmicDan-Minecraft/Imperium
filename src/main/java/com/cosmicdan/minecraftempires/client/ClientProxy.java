@@ -6,7 +6,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.cosmicdan.minecraftempires.CommonProxy;
 import com.cosmicdan.minecraftempires.client.gui.GuiLog;
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;

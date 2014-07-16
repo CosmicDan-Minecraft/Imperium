@@ -3,7 +3,7 @@ package com.cosmicdan.minecraftempires.eventhandlers;
 import java.util.Calendar;
 
 import com.cosmicdan.minecraftempires.Main;
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
@@ -29,7 +29,7 @@ public class PlayerEvents {
     
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        EntityPlayerME playerME = EntityPlayerME.get(event.player);
+        MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(event.player);
         if (!playerME.hasData) {
             playerME.addInstantEvent(EssentialEvents.FIRSTJOIN);
             //playerME.eventPending = true;

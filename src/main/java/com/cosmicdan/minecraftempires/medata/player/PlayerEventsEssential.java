@@ -14,7 +14,7 @@ public class PlayerEventsEssential {
     }
     
     public static void eventEssential(EntityPlayerMP player, EssentialEvents event) {
-        EntityPlayerME playerME = EntityPlayerME.get(player);
+        MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(player);
         switch (event){
         case FIRSTJOIN:
             // we don't use notifyPlayerOfEvent here because it's special

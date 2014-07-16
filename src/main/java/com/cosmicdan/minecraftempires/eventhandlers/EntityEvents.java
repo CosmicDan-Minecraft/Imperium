@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
 import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
@@ -15,11 +15,11 @@ public class EntityEvents {
     
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing event) {
-        if (event.entity instanceof EntityPlayer && EntityPlayerME.get((EntityPlayer) event.entity) == null)
-            EntityPlayerME.register((EntityPlayer) event.entity);
+        if (event.entity instanceof EntityPlayer && MinecraftEmpiresPlayer.get((EntityPlayer) event.entity) == null)
+            MinecraftEmpiresPlayer.register((EntityPlayer) event.entity);
 
-        if (event.entity instanceof EntityPlayer && event.entity.getExtendedProperties(EntityPlayerME.EXT_PROP_NAME) == null) {
-            event.entity.registerExtendedProperties(EntityPlayerME.EXT_PROP_NAME, new EntityPlayerME((EntityPlayerMP) event.entity));
+        if (event.entity instanceof EntityPlayer && event.entity.getExtendedProperties(MinecraftEmpiresPlayer.EXT_PROP_NAME) == null) {
+            event.entity.registerExtendedProperties(MinecraftEmpiresPlayer.EXT_PROP_NAME, new MinecraftEmpiresPlayer((EntityPlayerMP) event.entity));
         }
     }
     

@@ -2,7 +2,7 @@ package com.cosmicdan.minecraftempires.eventhandlers;
 
 import java.util.ArrayList;
 
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
 
 import net.minecraft.client.Minecraft;
@@ -94,7 +94,7 @@ public class WorldTickEvents {
         for(int i = 0; i < allNames.length; i++) {
             // func_152612_a = getPlayerForUsername
             EntityPlayerMP thisPlayer = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
-            EntityPlayerME playerME = EntityPlayerME.get(thisPlayer);
+            MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(thisPlayer);
             if (playerME.eventPending)
                 playerME.doEvents();
         }
@@ -110,7 +110,7 @@ public class WorldTickEvents {
             // func_152612_a = getPlayerForUsername
             EntityPlayerMP thisPlayer = MinecraftServer.getServer().getConfigurationManager().func_152612_a(allNames[i]);
             // TODO: Ensure they're currently in-world, and check if this is a valid playername (just in case)
-            EntityPlayerME playerME = EntityPlayerME.get(thisPlayer);
+            MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(thisPlayer);
             playerME.doInstantEvents();
         }
         eventPendingInstantUsers = new ArrayList();

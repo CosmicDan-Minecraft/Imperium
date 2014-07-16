@@ -3,7 +3,7 @@ package com.cosmicdan.minecraftempires.server;
 import java.util.ArrayList;
 
 import com.cosmicdan.minecraftempires.Main;
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -24,7 +24,7 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
     }
 
     public SyncPlayerME(EntityPlayer player) {
-        EntityPlayerME playerME = EntityPlayerME.get(player);
+        MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(player);
         eventListDone = playerME.eventListDone.toString();
     }
 
@@ -46,9 +46,9 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
         if (ctx.side == Side.CLIENT) {
             EntityPlayer player = Main.proxy.getPlayerFromMessageContext(ctx);
             if ( player != null) {
-                EntityPlayerME playerME = EntityPlayerME.get(player);
+                MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(player);
                 if (playerME != null ) {
-                    playerME.eventListDone = EntityPlayerME.stringToArrayList(msg.eventListDone);
+                    playerME.eventListDone = MinecraftEmpiresPlayer.stringToArrayList(msg.eventListDone);
                 }
             }
         }

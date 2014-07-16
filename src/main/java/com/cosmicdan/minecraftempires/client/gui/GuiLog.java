@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import com.cosmicdan.minecraftempires.Main;
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
 import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
@@ -75,7 +75,7 @@ public class GuiLog extends GuiScreen {
         FontRenderer text = this.fontRendererObj;
         
         // construct data (we do it inside the drawScreen so we get realtime updates)
-        EventLogBuilder playerEvents = new EventLogBuilder(EntityPlayerME.get(player));
+        EventLogBuilder playerEvents = new EventLogBuilder(MinecraftEmpiresPlayer.get(player));
         String content = playerEvents.eventLog;
         NiceText pageData = new NiceText(content, NiceText.Fonts.VANILLA, guiContentWidth, guiContentHeight);
         eventPageContent = pageData.pageData;

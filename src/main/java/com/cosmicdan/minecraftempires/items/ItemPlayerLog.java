@@ -1,7 +1,7 @@
 package com.cosmicdan.minecraftempires.items;
 
 import com.cosmicdan.minecraftempires.Main;
-import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.creativetab.CreativeTabs;
