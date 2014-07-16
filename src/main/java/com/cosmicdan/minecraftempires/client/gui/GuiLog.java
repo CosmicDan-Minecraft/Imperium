@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.cosmicdan.minecraftempires.Main;
 import com.cosmicdan.minecraftempires.medata.player.EntityPlayerME;
+import com.cosmicdan.minecraftempires.server.PacketHandler;
+import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
@@ -39,7 +41,11 @@ public class GuiLog extends GuiScreen {
 
     public GuiLog(EntityPlayer player) {
         // construct data here
-        
+        //SyncPlayerME syncPlayerME = new SyncPlayerME(player);
+        //PacketHandler.packetReqest.sendToServer(syncPlayerME);
+        PacketHandler.packetReqest.sendToServer(new SyncPlayerME());
+        //System.out.println(syncPlayerME.eventListDone);
+        //syncPlayerME.
         //System.out.println(playerME.eventListDone);
         //EventLogBuilder playerEvents = new EventLogBuilder(playerME); 
         //String content = playerEvents.eventLog;

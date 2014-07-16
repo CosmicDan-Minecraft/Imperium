@@ -10,6 +10,7 @@ import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
 import com.cosmicdan.minecraftempires.items.ItemBrushwood;
 import com.cosmicdan.minecraftempires.items.ItemPlayerLog;
 import com.cosmicdan.minecraftempires.recipes.ShapelessRecipes;
+import com.cosmicdan.minecraftempires.server.PacketHandler;
 import com.google.common.eventbus.Subscribe;
 
 import net.minecraft.block.Block;
@@ -80,6 +81,10 @@ public class Main
         // hook events for blocks
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
         
+        // initialize the packet handler
+        PacketHandler.init();
+        
+        // initialize the proxy
         proxy.preInit(event);
     }
     
