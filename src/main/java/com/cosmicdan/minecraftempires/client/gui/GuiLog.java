@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -27,7 +28,7 @@ public class GuiLog extends GuiScreen {
     private static final int BUTTON_NEXT = 1;
     private static final int BUTTON_PREV = 2;
     private static final int guiWidthHeight = 230;
-    private static final int guiContentWidth = 150;
+    private static final int guiContentWidth = 144;
     private static final int guiContentHeight = 180;
     
     private EntityPlayer player;
@@ -46,14 +47,16 @@ public class GuiLog extends GuiScreen {
         this.player = player;
     }
     
-    // draw the GUI elements
+    
     @Override
     public void initGui() {
-        int guiXStart = (width - guiWidthHeight) / 2;
-        this.buttonList.clear();
-        this.buttonList.add(this.buttonClose = new CloseButton(BUTTON_CLOSE, guiXStart + 170, 8));
-        this.buttonList.add(this.buttonNextPage = new PageButton(BUTTON_NEXT, guiXStart + 170, 200, true));
-        this.buttonList.add(this.buttonPreviousPage = new PageButton(BUTTON_PREV, guiXStart + 150, 200, false));
+        
+    }
+    
+    
+    @Override
+    public void onGuiClosed() {
+
     }
     
     // draw the book GUI background/frame
@@ -71,26 +74,49 @@ public class GuiLog extends GuiScreen {
         // draw the GUI
         drawTexturedModalRect(guiXStart, guiYStart, 0, 0, guiWidthHeight, guiWidthHeight);
         
-        // small time-saver
-        FontRenderer text = this.fontRendererObj;
-        
         // construct data (we do it inside the drawScreen so we get realtime updates)
         EventLogBuilder playerEvents = new EventLogBuilder(MinecraftEmpiresPlayer.get(player));
         String content = playerEvents.eventLog;
-        NiceText pageData = new NiceText(content, NiceText.Fonts.VANILLA, guiContentWidth, guiContentHeight);
+        NiceText pageData = new NiceText(this.fontRendererObj, content, NiceText.Fonts.VANILLA, guiContentWidth, guiContentHeight);
         eventPageContent = pageData.pageData;
         eventPageLineHeight = pageData.lineHeight;
         // we also want to set the initial page of event log to the last page (most recent)
         totalPages = currPage = eventPageContent.size() - 1;
         
+        // draw the buttons
+        this.buttonList.clear();
+        this.buttonList.add(this.buttonClose = new CloseButton(BUTTON_CLOSE, guiXStart + 176, 8));
+        this.buttonList.add(this.buttonNextPage = new PageButton(BUTTON_NEXT, guiXStart + 170, 200, true));
+        this.buttonList.add(this.buttonPreviousPage = new PageButton(BUTTON_PREV, guiXStart + 150, 200, false));
+        
+        // draw buttonList and labelList
+        super.drawScreen(mouseX, mouseY, renderPartials);
+        
+        // linear smoothing disabled, can't turn it off :\
+        //GL11.glAlphaFunc(GL11.GL_GREATER,0.5f);
+        
         int drawTextY = guiContentYStart;
         for (String line : eventPageContent.get(currPage)) {
-            text.drawString(line, guiContentXStart, drawTextY, 0xFFFFFF);
-            drawTextY += eventPageLineHeight;
+            GL11.glPushMatrix();
+            if (line.contains("[HEADER][DAY]")) {
+                line = line.substring(line.indexOf("=") + 1);
+                GL11.glScaled(0.2D, 0.2D, 1.0D);
+                double drawTextMulti = 5;
+                double drawTextYAdjust = 0.2D; 
+                drawTextY += (int) (pageData.drawDayHeader(mc, this, (int)(guiContentXStart * drawTextMulti), (int)(drawTextY * drawTextMulti), 1, Integer.parseInt(line)) * drawTextYAdjust);
+                
+            } else {
+                GL11.glScaled(0.8D, 0.8D, 1.0D);
+                double drawTextMulti = 1.25D;
+                this.fontRendererObj.drawString(line, (int)(guiContentXStart * drawTextMulti), (int)(drawTextY * drawTextMulti), 0xFFFFFF);
+                drawTextY += eventPageLineHeight;
+            }
+            GL11.glPopMatrix();
         }
         
-        // pass it on
-        super.drawScreen(mouseX, mouseY, renderPartials);
+        // linear smoothing disabled, can't turn it off :\
+        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
     }
 
     // the actions for GUI buttons
@@ -99,7 +125,7 @@ public class GuiLog extends GuiScreen {
         switch (button.id) {
             case BUTTON_CLOSE:
                 // command to close the current GUI window (i.e. this book)
-                mc.displayGuiScreen(null);
+                close();
                 break;
             case BUTTON_NEXT:
                 if (currPage < totalPages) ++currPage;
@@ -119,12 +145,11 @@ public class GuiLog extends GuiScreen {
     // hook for keyboard keys
     @Override
     protected void keyTyped(char c, int key) {
-        //char lowerCase = Character.toLowerCase(c);
         switch (key) {
             case Keyboard.KEY_ESCAPE:
             case Keyboard.KEY_E:
                 // Escape = close book
-                mc.displayGuiScreen(null);
+                close();
                 break;
             case Keyboard.KEY_A:
             case Keyboard.KEY_LEFT:
@@ -136,6 +161,12 @@ public class GuiLog extends GuiScreen {
                 break;
         }
     }
+    
+    private void close() {
+        GL11.glDisable(GL11.GL_BLEND);
+        mc.displayGuiScreen(null);
+    }
+
     
     // page next/previous buttons. Has some hard-coded values for my texture UV map.
     static class PageButton extends GuiButton {

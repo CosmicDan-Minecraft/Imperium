@@ -4,7 +4,6 @@ item.PlayerLog.name=Log
 
 playerlog.found=You have found some old wood to write on...
 playerlog.written=You have written on your Log...
-playerlog.day=Day %s
 playerlog.eventMsg_ESSENTIAL_FIRSTJOIN=[Insert backstory here]. I've found some old wood to write on, I'll ironically use it as a log for the moment.
 text.welcome=Welcome %s, it is day %s.
 text.newDayDawns=Day %s dawns!

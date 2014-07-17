@@ -30,7 +30,7 @@ public class EventLogBuilder {
         if (eventDayCurrent != newEventDay) {
             // TODO: Make a special flag to ensure that 'Day #' headers do not appear on the bottom of pages.
             //       Probably best to do this in the NiceText builder as the data is formatted
-            eventLog += (StatCollector.translateToLocalFormatted("playerlog.day", newEventDay)) + "\n";
+            eventLog += "[HEADER][DAY]=" + newEventDay + "\n";
             eventDayCurrent = newEventDay;
         }
         eventLog += "-" + (StatCollector.translateToLocal("playerlog.eventMsg_" + newEventType + "_" + newEvent) + "\n");
