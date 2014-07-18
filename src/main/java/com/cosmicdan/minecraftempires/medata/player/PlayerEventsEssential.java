@@ -22,7 +22,7 @@ public class PlayerEventsEssential {
             String gotPlayerLog = StatCollector.translateToLocal("playerlog.found");
             player.addChatComponentMessage(new ChatComponentText(gotPlayerLog));
             // give them the log item
-            player.inventory.addItemStackToInventory(new ItemStack(ModItems.playerLog));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.playerlog));
         }
     }
 }

@@ -5,12 +5,15 @@ import net.minecraft.item.Item;
 
 public final class ModItems {
     public static Item brushwood;
-    public static Item playerLog;
+    public static Item playerlog;
+    public static Item stickshelter;
     
     public static final void addItems() {
         brushwood = new ItemBrushwood();
         GameRegistry.registerItem(brushwood, "itemBrushwood");
-        playerLog = new ItemPlayerLog();
-        GameRegistry.registerItem(playerLog, "itemPlayerLog");
+        playerlog = new ItemPlayerLog();
+        GameRegistry.registerItem(playerlog, "itemPlayerLog");
+        stickshelter = new ItemStickShelter();
+        GameRegistry.registerItem(stickshelter, "itemStickShelter");
     }
 }

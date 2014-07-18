@@ -61,22 +61,22 @@ public class Main
         // blocks/items
         ModBlocks.addBlocks();
         ModItems.addItems();
-        
+
         // recipes
         ShapelessRecipes.addAll();
-        
+
         // world generation
         GameRegistry.registerWorldGenerator(new WorldGen(), 1);
-        
+
         // hook events for restrictions
         MinecraftForge.EVENT_BUS.register(new EventHandlerRestrictions());
-        
+
         // hook events for blocks
         MinecraftForge.EVENT_BUS.register(new BlockEvents());
-        
+
         // initialize the packet handler
         PacketHandler.init();
-        
+
         // initialize the proxy
         proxy.preInit(event);
     }

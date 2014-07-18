@@ -13,8 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBrushwood extends Block
-{
+public class BlockBrushwood extends Block {
         public BlockBrushwood() {
             // we want this to behave like grass - will look green on maps, will burn in fire, etc.
             super(Material.grass);
@@ -25,18 +24,18 @@ public class BlockBrushwood extends Block
             // set graphic
             setBlockTextureName("minecraftempires:brushwood");
             // setup the hook for 'updateTick'. I think this should be removed because I have tickRate (or I should remove tickRate?)
-            setTickRandomly(true);
+            //setTickRandomly(true);
         }
         
         // How many ticks to wait before running 'updateTick' for every instance of this block 
-        public int tickRate() {
-            return 200;
-         }
+        //public int tickRate() {
+        //    return 200;
+        //}
         
-        @Override
-        public void updateTick(World world, int x, int y, int z, Random random) {
+        //@Override
+        //public void updateTick(World world, int x, int y, int z, Random random) {
             // TODO - Have Brushwood randomly replenish as long as there are others nearby. *Maybe*, not sure if I want to do this.
-        }
+        //}
         
         // This block drops it's item equivalent
         @Override
