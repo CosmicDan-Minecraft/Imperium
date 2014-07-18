@@ -3,6 +3,7 @@ package com.cosmicdan.minecraftempires.blocks;
 import java.util.Random;
 
 import com.cosmicdan.minecraftempires.Main;
+import com.cosmicdan.minecraftempires.items.ModItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -40,7 +41,7 @@ public class BlockBrushwood extends Block
         // This block drops it's item equivalent
         @Override
         public Item getItemDropped(int metadata, Random random, int fortune) {
-            return Main.itemBrushwood;
+            return ModItems.brushwood;
         }
         
         // transparency stuff (so the blocks surrounding it don't go see-through) 

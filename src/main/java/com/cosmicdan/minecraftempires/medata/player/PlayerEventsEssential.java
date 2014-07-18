@@ -1,6 +1,7 @@
 package com.cosmicdan.minecraftempires.medata.player;
 
 import com.cosmicdan.minecraftempires.Main;
+import com.cosmicdan.minecraftempires.items.ModItems;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ public class PlayerEventsEssential {
             String gotPlayerLog = StatCollector.translateToLocal("playerlog.found");
             player.addChatComponentMessage(new ChatComponentText(gotPlayerLog));
             // give them the log item
-            player.inventory.addItemStackToInventory(new ItemStack(Main.itemPlayerLog));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.playerLog));
         }
     }
 }

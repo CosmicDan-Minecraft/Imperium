@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 import com.cosmicdan.minecraftempires.Main;
+import com.cosmicdan.minecraftempires.blocks.ModBlocks;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -36,7 +37,7 @@ public class BlockEvents {
                 // ensure that spawnCandidate is (a) an air block and (b) below the leaf block that was destroyed
                 if (spawnCandidate.isAir(event.world, event.x, y, event.z) && y < event.y) {
                     // spawnCandidate is valid, place Brushwood block!
-                    event.world.setBlock(event.x, y, event.z, Main.blockBrushwood);
+                    event.world.setBlock(event.x, y, event.z, ModBlocks.brushwood);
                 }
             }
         }

@@ -2,6 +2,8 @@ package com.cosmicdan.minecraftempires;
 
 import java.util.Random;
 
+import com.cosmicdan.minecraftempires.blocks.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -70,7 +72,7 @@ public class WorldGen implements IWorldGenerator {
                             // check if the block is leaves
                             if (world.getBlock(scanBlockX + 0, scanBlockY + 0, scanBlockZ + 0).getMaterial() == Material.leaves) {
                                 // leaves found! Place the block at the original co-ords that were randomly selected
-                                world.setBlock(blockX + 0, blockY + 0, blockZ + 0, Main.blockBrushwood, 0, 0);
+                                world.setBlock(blockX + 0, blockY + 0, blockZ + 0, ModBlocks.brushwood, 0, 0);
                                 // abort the radius scan so we can move on to the next iteration for this chunk (or the next chunk if we've reached blockAbundanceBrushwood)
                                 break scanLoop;
                             }
