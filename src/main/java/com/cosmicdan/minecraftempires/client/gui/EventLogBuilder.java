@@ -35,6 +35,6 @@ public class EventLogBuilder {
             eventLog += "[HEADER][DAY]=" + newEventDay + "\n";
             eventDayCurrent = newEventDay;
         }
-        eventLog += "-" + (StatCollector.translateToLocal("playerlog.eventMsg_" + newEventType + "_" + newEvent) + "\n");
+        eventLog += "-" + (StatCollector.translateToLocal("playerlog.eventMsg_" + newEventType + "_" + newEvent) + "[NEWLINE]");
     }
 }

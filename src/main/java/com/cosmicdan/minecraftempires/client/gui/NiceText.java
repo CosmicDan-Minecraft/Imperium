@@ -75,10 +75,13 @@ public class NiceText {
         int lineLenChars = 0;
         int lineLenPx = 0;
         int lengthSpaceCharPx = fontRendererObj.getStringWidth(" ");
+        Boolean newLineTrailing = false;
         while (tok.hasMoreTokens()) {
             String word = tok.nextToken();
-            //int wordLength = fontRendererObj.getStringWidth(word);
-            //System.out.println(word);
+            if (word.contains("[NEWLINE]")) {
+                word = word.replace("[NEWLINE]", "\n");
+                newLineTrailing = true;
+            }
             if (!word.contains("[HEADER]")) {
                 while(fontRendererObj.getStringWidth(word) > maxWidthPx){
                     // some stupidly-long string, we'll do our best (should never happen
@@ -102,14 +105,11 @@ public class NiceText {
                 lineLenChars = 0;
                 lineLenPx = 0;
             }
-            /*
-            if (!word.contains("[HEADER]")) {
-                lineLen += word.length() + 1;
-            } else {
-                // input token has it's own line break, honor it
-                lineLen = 0;
+            if (newLineTrailing) {
+                lineLenChars = 0;
+                lineLenPx = 0;
+                newLineTrailing = false;
             }
-            */
         }
         return output.toString().split("\n");
     }
