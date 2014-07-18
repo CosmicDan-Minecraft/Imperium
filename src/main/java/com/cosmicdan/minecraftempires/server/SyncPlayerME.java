@@ -1,5 +1,7 @@
 package com.cosmicdan.minecraftempires.server;
 
+import java.util.ArrayList;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -63,14 +65,18 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
                         // we only want to update eventsDone for the client (i.e. server sending to players)
                         playerME.eventListDone = MinecraftEmpiresPlayer.stringToArrayList(msg.eventListDone);
                     } else {
-                        // we only want to update pending events for the server (i.e. client needs to update server)
-                        playerME.eventListPending = MinecraftEmpiresPlayer.stringToArrayList(msg.eventListPending);
-                        playerME.eventListPendingInstant = MinecraftEmpiresPlayer.stringToArrayList(msg.eventListPendingInstant);
+                        // We only want to update pending events for the server (i.e. client needs to update server).
+                        // For some reason there is no need to update playerME props for client calls to server, no idea why. 
+                        // Could cause trouble down the line if there are duplicates and the server is loaded.
+                        
+                        /*
+                        if (msg.eventListPending.length() > 2) {
+                            
+                        }
+                        */
+
                         if (msg.eventListPendingInstant.length() > 2) {
-                            // found pending instant event, notify WorldTickEvents immediately...
-                            // UNLESS this player is already pending!
-                            if (!WorldTickEvents.isPlayerPendingInstant((EntityPlayerMP)player)) {
-                                WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)player);
+                            if (WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)player)) {
                                 WorldTickEvents.eventPendingInstant = true;
                             }
                         }

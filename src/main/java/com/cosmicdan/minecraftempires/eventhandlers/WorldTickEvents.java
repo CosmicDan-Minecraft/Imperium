@@ -77,8 +77,11 @@ public class WorldTickEvents {
         MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(msg));
     }
     
-    public static void addPlayerToPendingInstants(EntityPlayerMP player) {
-        eventPendingInstantUsers.add(player.getDisplayName());
+    public static Boolean addPlayerToPendingInstants(EntityPlayerMP player) {
+        if (!isPlayerPendingInstant(player))
+            return eventPendingInstantUsers.add(player.getDisplayName());
+        else
+            return false;
     }
     
     public static Boolean isPlayerPendingInstant(EntityPlayerMP player) {
