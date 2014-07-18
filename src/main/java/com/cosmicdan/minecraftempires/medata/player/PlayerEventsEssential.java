@@ -24,8 +24,4 @@ public class PlayerEventsEssential {
             player.inventory.addItemStackToInventory(new ItemStack(Main.itemPlayerLog));
         }
     }
-    
-    public static String getEventDesc() {
-        return "";
-    }
 }

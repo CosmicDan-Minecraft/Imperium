@@ -9,6 +9,7 @@ import org.apache.commons.lang3.EnumUtils;
 
 import com.cosmicdan.minecraftempires.eventhandlers.WorldTickEvents;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
+import com.cosmicdan.minecraftempires.medata.player.PlayerEventsTutorial.TutorialEvents;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
 import com.cosmicdan.minecraftempires.server.SyncPlayerME;
@@ -36,6 +37,9 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     public ArrayList eventListDone = new ArrayList();
     public Long lastLogin, lastSave = 0L;
     
+    public int playerAgeTier = 1; // Mirrors the faction Age, required for pre-faction mechanics  
+    public Boolean canBreakWood = false;
+    
     public MinecraftEmpiresPlayer(EntityPlayer player) {
         this.player = player;
     }
@@ -58,6 +62,9 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         playerProps.setString("eventListDone", eventListDone.toString());
         playerProps.setLong("lastLogin", this.lastLogin);
         playerProps.setLong("lastSave", this.player.worldObj.getTotalWorldTime());
+        playerProps.setInteger("playerAgeTier", playerAgeTier);
+        playerProps.setBoolean("canBreakWood", canBreakWood);
+        
         playerData.setTag(EXT_PROP_NAME, playerProps);
     }
 
@@ -77,6 +84,8 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         this.eventListDone = stringToArrayList(playerProps.getString("eventListDone"));
         this.lastLogin = player.worldObj.getTotalWorldTime();
         this.lastSave = playerProps.getLong("lastSave");
+        this.playerAgeTier = playerProps.getInteger("playerAgeTier");
+        this.canBreakWood = playerProps.getBoolean("canBreakWood");
     }
 
     @Override
@@ -86,11 +95,17 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     }
 
     public Boolean addEvent(Enum event) {
-        return eventListPending.add(event);
+        if (eventListPending.toString().contains(event.toString()))
+            return false;
+        else
+            return eventListPending.add(event);
     }
     
     public Boolean addInstantEvent(Enum event) {
-        return eventListPendingInstant.add(event);
+        if (eventListPendingInstant.toString().contains(event.toString()))
+            return false;
+        else
+            return eventListPendingInstant.add(event);
     }
     
     public void doEvents() {
@@ -109,14 +124,25 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     }
     
     private void doEventInternalProc(Object event) {
-        if (eventTypeEssential(event.toString()))
-            PlayerEventsEssential.eventEssential((EntityPlayerMP)player, (EssentialEvents)event);
+        if (eventTypeEssential(event.toString())) {
+            EssentialEvents eventVal = EssentialEvents.valueOf(event.toString());
+            PlayerEventsEssential.eventEssential((EntityPlayerMP)player, eventVal);
+        } else if (eventTypeTutorial(event.toString())) {
+            TutorialEvents eventVal = TutorialEvents.valueOf(event.toString());
+            PlayerEventsTutorial.eventTutorial((EntityPlayerMP)player, eventVal);
+        }
+        
         eventListDone.add(event.toString() + "=" + WorldData.worldDay);
-        sync();
+        notifyPlayerOfEvent();
+        syncToClient();
     }
     
-    public void sync() {
+    public void syncToClient() {
         PacketHandler.packetReq.sendTo(new SyncPlayerME(player), (EntityPlayerMP)player);
+    }
+    
+    public void syncToServer() {
+        PacketHandler.packetReq.sendToServer(new SyncPlayerME(player));
     }
     
     /*
@@ -127,11 +153,18 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
         for (String event : list) {
             if (event.isEmpty()) break;
-            // cut the day off the end
-            int eventDoneDay = Integer.parseInt(event.substring(event.indexOf("=") + 1));
-            event = event.replace("=" + eventDoneDay, "");
+            // split the data off the end if it has it
+            int dataOffset = event.indexOf("=") + 1;
+            String data = "";
+            if (dataOffset > 0) {
+                int eventDoneDay = Integer.parseInt(event.substring(dataOffset));
+                event = event.replace("=" + eventDoneDay, "");
+                data = "=" + eventDoneDay;
+            }
             if (eventTypeEssential(event))
-                retval.add(EssentialEvents.valueOf(event) + "=" + eventDoneDay);
+                retval.add(EssentialEvents.valueOf(event) + data);
+            else if (eventTypeTutorial(event))
+                retval.add(TutorialEvents.valueOf(event) + data);
         }
         return retval;
     }
@@ -145,10 +178,21 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         return false;
     }
     
-    private static void notifyPlayerOfEvent(EntityPlayerMP player, int tier) {
-        if (tier == 1) { // Primal age, "Player Log"
+    public static Boolean eventTypeTutorial(String event) {
+        for (TutorialEvents tutorialEvent : TutorialEvents.values()) {
+            if(tutorialEvent.toString().contains(event.toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void notifyPlayerOfEvent() {
+        if (playerAgeTier == 1) { // Primal age, "Player Log"
             String writtenToLog = StatCollector.translateToLocal("playerlog.written");
             player.addChatComponentMessage(new ChatComponentText(writtenToLog));
         }
     }
+    
+    
 }

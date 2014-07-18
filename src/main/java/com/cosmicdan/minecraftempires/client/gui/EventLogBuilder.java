@@ -23,6 +23,8 @@ public class EventLogBuilder {
             String event = eventDone.replace("=" + eventDoneDay, "");
             if (MinecraftEmpiresPlayer.eventTypeEssential(event))
                 addToEventLog("ESSENTIAL", event, eventDoneDay);
+            else if (MinecraftEmpiresPlayer.eventTypeTutorial(event))
+                addToEventLog("TUTORIAL", event, eventDoneDay);
         }
     }
     

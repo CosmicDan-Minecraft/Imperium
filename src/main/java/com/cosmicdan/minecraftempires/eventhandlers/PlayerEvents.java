@@ -7,7 +7,6 @@ import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
-import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -32,13 +31,12 @@ public class PlayerEvents {
         MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(event.player);
         if (!playerME.hasData) {
             playerME.addInstantEvent(EssentialEvents.FIRSTJOIN);
-            //playerME.eventPending = true;
             WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)event.player);
             WorldTickEvents.eventPendingInstant = true;
         }
         String msg = StatCollector.translateToLocalFormatted("text.welcome", event.player.getDisplayName(), WorldData.worldDay);
         event.player.addChatMessage(new ChatComponentText(msg));
-        playerME.sync();
+        playerME.syncToClient();
     }
     
     @SubscribeEvent

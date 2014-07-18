@@ -1,7 +1,12 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
+import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
+import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
+import com.cosmicdan.minecraftempires.medata.player.PlayerEventsTutorial.TutorialEvents;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -15,9 +20,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
   */
 public class EventHandlerRestrictions {
     
+    MinecraftEmpiresPlayer playerME;
+    
     // hook event when a player is trying to break a block
     @SubscribeEvent
     public void onBreakSpeed(BreakSpeed event) {
+        playerME = MinecraftEmpiresPlayer.get(event.entityPlayer); 
         if (event.block == Blocks.log) {
             // the player is trying to break a vanilla tree
             checkAbortTree(event);
@@ -30,16 +38,14 @@ public class EventHandlerRestrictions {
     
     // this method is for determining if a tree block break is to be permitted or denied
     public void checkAbortTree(BreakSpeed event) {
-        if(event.isCancelable()) { // safety purposes
-            if (event.entityPlayer.isSwingInProgress) {
-                // Play the hurt animation but don't actually hurt them. 
-                // TODO: This event is fired ~5 times on a single click, see if I can't solve that :)
-                event.entityPlayer.performHurtAnimation();
-                // Deny the block breaking
-                // TODO: Actually check if they've learned the art of Lumbering (Tek) or Tree-Chi (Ava)
+        if (!playerME.canBreakWood) {
+            if (!playerME.eventListDone.toString().contains("WOODPUNCH")) {
+                playerME.addInstantEvent(TutorialEvents.WOODPUNCH);
+                playerME.syncToServer();
+            }
+            if(event.isCancelable()) { // not sure if needed but doesn't hurt
+                event.entityPlayer.swingProgressInt = 0;
                 event.setCanceled(true);
-                // TODO: Queue a Journal update for this player. Something like "Today I tried to punch a tree,
-                //       it didn't turn out like I expected. Perhaps I can find some wood [b]lying around[/b] instead...
             }
         }
     }

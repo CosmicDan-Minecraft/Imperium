@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import com.cosmicdan.minecraftempires.Main;
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
-import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;

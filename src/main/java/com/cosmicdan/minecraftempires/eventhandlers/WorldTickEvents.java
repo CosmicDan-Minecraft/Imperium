@@ -30,19 +30,15 @@ public class WorldTickEvents {
     private final Long ticksEvening = 12000L;
     private final Long ticksMidnight = 18000L;
     
-    // how many ticks between checking for "instant" events (I really don't want to check for instants every tick)
-    private int instantTickDelay = 20;
+    // how many ticks between checking for "instant" events (I don't want to check for instants every tick)
+    private int instantTickDelay = 30;
     
     private int instantTickDelayReset = instantTickDelay;
     private static ArrayList<String> eventPendingInstantUsers = new ArrayList();
     
     public static Boolean eventPendingInstant = false;
     
-    public WorldTickEvents() {
-        //WorldData worldData = new WorldData(); 
-        //worldData.loadData(world, "MinecraftEmpires", "global");
-        //worldDataGlobal = worldData.getData();
-    }
+    public WorldTickEvents() { }
     
     @SubscribeEvent
     public void onWorldTick(WorldTickEvent event) {
@@ -83,6 +79,13 @@ public class WorldTickEvents {
     
     public static void addPlayerToPendingInstants(EntityPlayerMP player) {
         eventPendingInstantUsers.add(player.getDisplayName());
+    }
+    
+    public static Boolean isPlayerPendingInstant(EntityPlayerMP player) {
+        if (eventPendingInstantUsers.toString().contains(player.getDisplayName()))
+            return true;
+        else
+            return false;
     }
     
     /*

@@ -7,7 +7,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
-import com.cosmicdan.minecraftempires.server.SyncPlayerME;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -25,7 +24,7 @@ public class EntityEvents {
     
     public void onEntityJoin(EntityJoinWorldEvent event) {
         
-        // multiplayer (needed? I think PlayerEvents should handle this fine)
+        // TODO: Is this needed for multiplayer? I think PlayerEvents should handle this fine, need to test
         //if(!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayer) {
         //    PacketHandler.packetReq.sendTo(new SyncPlayerME((EntityPlayer)event.entity), (EntityPlayerMP)event.entity);
         //}
