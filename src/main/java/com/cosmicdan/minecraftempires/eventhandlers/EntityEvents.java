@@ -1,8 +1,10 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
@@ -45,5 +47,18 @@ public class EntityEvents {
             }
         }
         event.setResult(Result.ALLOW);
+    }
+    
+    @SubscribeEvent
+    public void onCheckSpawn(CheckSpawn event) {
+        // always allow players, not sure it's needed but whatever
+        if (event.entity instanceof EntityPlayer) {
+            event.setResult(Result.ALLOW);
+            return;
+        }
+        if (event.entity instanceof EntityMob) {
+            event.setResult(Result.DENY);
+            return;
+        }
     }
 }
