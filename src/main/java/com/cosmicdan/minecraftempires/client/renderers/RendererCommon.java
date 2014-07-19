@@ -83,9 +83,9 @@ public class RendererCommon {
     }
     
     /**
-     * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
+     * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture, underside
      */
-    public void renderFaceYNeg(Block p_147768_1_, double p_147768_2_, double p_147768_4_, double p_147768_6_, IIcon p_147768_8_)
+    public void renderFaceYNeg(Block p_147768_1_, double p_147768_2_, double p_147768_4_, double p_147768_6_, IIcon p_147768_8_, boolean underside)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -170,30 +170,49 @@ public class RendererCommon {
         {
             tessellator.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             tessellator.setBrightness(this.brightnessTopLeft);
-            tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            else
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
             tessellator.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             tessellator.setBrightness(this.brightnessBottomLeft);
-            tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+            else
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
             tessellator.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             tessellator.setBrightness(this.brightnessBottomRight);
-            tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+            else
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
             tessellator.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             tessellator.setBrightness(this.brightnessTopRight);
-            tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
         }
         else
         {
-            tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
-            tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
-            tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
-            tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            if (!underside) {
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            } else {
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            }
         }
     }
 
     /**
-     * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
+     * Renders the given texture to the top face of the block. Args: block, x, y, z, texture, underside
      */
-    public void renderFaceYPos(Block p_147806_1_, double p_147806_2_, double p_147806_4_, double p_147806_6_, IIcon p_147806_8_)
+    public void renderFaceYPos(Block p_147806_1_, double p_147806_2_, double p_147806_4_, double p_147806_6_, IIcon p_147806_8_, boolean underside)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -278,30 +297,49 @@ public class RendererCommon {
         {
             tessellator.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             tessellator.setBrightness(this.brightnessTopLeft);
-            tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
             tessellator.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             tessellator.setBrightness(this.brightnessBottomLeft);
-            tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+            else
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
             tessellator.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             tessellator.setBrightness(this.brightnessBottomRight);
-            tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+            else
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
             tessellator.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             tessellator.setBrightness(this.brightnessTopRight);
-            tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
         }
         else
         {
-            tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
-            tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
-            tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
-            tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            if (!underside) {
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            } else {
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+                tessellator.addVertexWithUV(d12, d13, d14, d7, d9);
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            }
         }
     }
 
     /**
-     * Renders the given texture to the north (z-negative) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the north (z-negative) face of the block.  Args: block, x, y, z, texture, underside
      */
-    public void renderFaceZNeg(Block p_147761_1_, double p_147761_2_, double p_147761_4_, double p_147761_6_, IIcon p_147761_8_)
+    public void renderFaceZNeg(Block p_147761_1_, double p_147761_2_, double p_147761_4_, double p_147761_6_, IIcon p_147761_8_, boolean underside)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -401,30 +439,49 @@ public class RendererCommon {
         {
             tessellator.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             tessellator.setBrightness(this.brightnessTopLeft);
-            tessellator.addVertexWithUV(d11, d14, d15, d7, d9);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d14, d15, d7, d9);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d4, d6);
             tessellator.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             tessellator.setBrightness(this.brightnessBottomLeft);
-            tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
+            else
+                tessellator.addVertexWithUV(d12, d13, d15, d8, d10);
             tessellator.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             tessellator.setBrightness(this.brightnessBottomRight);
-            tessellator.addVertexWithUV(d12, d13, d15, d8, d10);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d13, d15, d8, d10);
+            else
+                tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
             tessellator.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             tessellator.setBrightness(this.brightnessTopRight);
-            tessellator.addVertexWithUV(d11, d13, d15, d4, d6);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d15, d4, d6);
+            else
+                tessellator.addVertexWithUV(d11, d14, d15, d7, d9);
         }
         else
         {
-            tessellator.addVertexWithUV(d11, d14, d15, d7, d9);
-            tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
-            tessellator.addVertexWithUV(d12, d13, d15, d8, d10);
-            tessellator.addVertexWithUV(d11, d13, d15, d4, d6);
+            if (!underside) {
+                tessellator.addVertexWithUV(d11, d14, d15, d7, d9);
+                tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
+                tessellator.addVertexWithUV(d12, d13, d15, d8, d10);
+                tessellator.addVertexWithUV(d11, d13, d15, d4, d6);
+            } else {
+                tessellator.addVertexWithUV(d11, d13, d15, d4, d6);
+                tessellator.addVertexWithUV(d12, d13, d15, d8, d10);
+                tessellator.addVertexWithUV(d12, d14, d15, d3, d5);
+                tessellator.addVertexWithUV(d11, d14, d15, d7, d9);
+            }
         }
     }
 
     /**
-     * Renders the given texture to the south (z-positive) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the south (z-positive) face of the block.  Args: block, x, y, z, texture, underside
      */
-    public void renderFaceZPos(Block p_147734_1_, double p_147734_2_, double p_147734_4_, double p_147734_6_, IIcon p_147734_8_)
+    public void renderFaceZPos(Block p_147734_1_, double p_147734_2_, double p_147734_4_, double p_147734_6_, IIcon p_147734_8_, boolean underside)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -517,30 +574,49 @@ public class RendererCommon {
         {
             tessellator.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             tessellator.setBrightness(this.brightnessTopLeft);
-            tessellator.addVertexWithUV(d11, d14, d15, d3, d5);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d14, d15, d3, d5);
+            else
+                tessellator.addVertexWithUV(d12, d14, d15, d7, d9);
             tessellator.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             tessellator.setBrightness(this.brightnessBottomLeft);
-            tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+            else
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
             tessellator.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             tessellator.setBrightness(this.brightnessBottomRight);
-            tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
             tessellator.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             tessellator.setBrightness(this.brightnessTopRight);
-            tessellator.addVertexWithUV(d12, d14, d15, d7, d9);
+            if (!underside)
+                tessellator.addVertexWithUV(d12, d14, d15, d7, d9);
+            else
+                tessellator.addVertexWithUV(d11, d14, d15, d3, d5);
         }
         else
         {
-            tessellator.addVertexWithUV(d11, d14, d15, d3, d5);
-            tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
-            tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
-            tessellator.addVertexWithUV(d12, d14, d15, d7, d9);
+            if (!underside) {
+                tessellator.addVertexWithUV(d11, d14, d15, d3, d5);
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+                tessellator.addVertexWithUV(d12, d14, d15, d7, d9);
+            } else {
+                tessellator.addVertexWithUV(d12, d14, d15, d7, d9);
+                tessellator.addVertexWithUV(d12, d13, d15, d4, d6);
+                tessellator.addVertexWithUV(d11, d13, d15, d8, d10);
+                tessellator.addVertexWithUV(d11, d14, d15, d3, d5);
+            }
         }
     }
 
     /**
-     * Renders the given texture to the west (x-negative) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the west (x-negative) face of the block.  Args: block, x, y, z, texture, underside
      */
-    public void renderFaceXNeg(Block p_147798_1_, double p_147798_2_, double p_147798_4_, double p_147798_6_, IIcon p_147798_8_)
+    public void renderFaceXNeg(Block p_147798_1_, double p_147798_2_, double p_147798_4_, double p_147798_6_, IIcon p_147798_8_, boolean underside)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -633,30 +709,49 @@ public class RendererCommon {
         {
             tessellator.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             tessellator.setBrightness(this.brightnessTopLeft);
-            tessellator.addVertexWithUV(d11, d13, d15, d7, d9);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d15, d7, d9);
+            else
+                tessellator.addVertexWithUV(d11, d12, d15, d4, d6);
             tessellator.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             tessellator.setBrightness(this.brightnessBottomLeft);
-            tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+            else
+                tessellator.addVertexWithUV(d11, d12, d14, d8, d10);
             tessellator.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             tessellator.setBrightness(this.brightnessBottomRight);
-            tessellator.addVertexWithUV(d11, d12, d14, d8, d10);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d12, d14, d8, d10);
+            else
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
             tessellator.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             tessellator.setBrightness(this.brightnessTopRight);
-            tessellator.addVertexWithUV(d11, d12, d15, d4, d6);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d12, d15, d4, d6);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d7, d9);
         }
         else
         {
-            tessellator.addVertexWithUV(d11, d13, d15, d7, d9);
-            tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
-            tessellator.addVertexWithUV(d11, d12, d14, d8, d10);
-            tessellator.addVertexWithUV(d11, d12, d15, d4, d6);
+            if (!underside) {
+                tessellator.addVertexWithUV(d11, d13, d15, d7, d9);
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+                tessellator.addVertexWithUV(d11, d12, d14, d8, d10);
+                tessellator.addVertexWithUV(d11, d12, d15, d4, d6);
+            } else {
+                tessellator.addVertexWithUV(d11, d12, d15, d4, d6);
+                tessellator.addVertexWithUV(d11, d12, d14, d8, d10);
+                tessellator.addVertexWithUV(d11, d13, d14, d3, d5);
+                tessellator.addVertexWithUV(d11, d13, d15, d7, d9);
+            }
         }
     }
 
     /**
-     * Renders the given texture to the east (x-positive) face of the block.  Args: block, x, y, z, texture
+     * Renders the given texture to the east (x-positive) face of the block.  Args: block, x, y, z, texture, underside
      */
-    public void renderFaceXPos(Block p_147764_1_, double p_147764_2_, double p_147764_4_, double p_147764_6_, IIcon p_147764_8_)
+    public void renderFaceXPos(Block p_147764_1_, double p_147764_2_, double p_147764_4_, double p_147764_6_, IIcon p_147764_8_, boolean underside)
     {
         Tessellator tessellator = Tessellator.instance;
 
@@ -756,23 +851,42 @@ public class RendererCommon {
         {
             tessellator.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             tessellator.setBrightness(this.brightnessTopLeft);
-            tessellator.addVertexWithUV(d11, d12, d15, d8, d10);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d12, d15, d8, d10);
+            else
+                tessellator.addVertexWithUV(d11, d13, d15, d3, d5);
             tessellator.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             tessellator.setBrightness(this.brightnessBottomLeft);
-            tessellator.addVertexWithUV(d11, d12, d14, d4, d6);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d12, d14, d4, d6);
+            else
+                tessellator.addVertexWithUV(d11, d13, d14, d7, d9);
             tessellator.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             tessellator.setBrightness(this.brightnessBottomRight);
-            tessellator.addVertexWithUV(d11, d13, d14, d7, d9);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d14, d7, d9);
+            else
+                tessellator.addVertexWithUV(d11, d12, d14, d4, d6);
             tessellator.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             tessellator.setBrightness(this.brightnessTopRight);
-            tessellator.addVertexWithUV(d11, d13, d15, d3, d5);
+            if (!underside)
+                tessellator.addVertexWithUV(d11, d13, d15, d3, d5);
+            else
+                tessellator.addVertexWithUV(d11, d12, d15, d8, d10);
         }
         else
         {
-            tessellator.addVertexWithUV(d11, d12, d15, d8, d10);
-            tessellator.addVertexWithUV(d11, d12, d14, d4, d6);
-            tessellator.addVertexWithUV(d11, d13, d14, d7, d9);
-            tessellator.addVertexWithUV(d11, d13, d15, d3, d5);
+            if (!underside) {
+                tessellator.addVertexWithUV(d11, d12, d15, d8, d10);
+                tessellator.addVertexWithUV(d11, d12, d14, d4, d6);
+                tessellator.addVertexWithUV(d11, d13, d14, d7, d9);
+                tessellator.addVertexWithUV(d11, d13, d15, d3, d5);
+            } else {
+                tessellator.addVertexWithUV(d11, d13, d15, d3, d5);
+                tessellator.addVertexWithUV(d11, d13, d14, d7, d9);
+                tessellator.addVertexWithUV(d11, d12, d14, d4, d6);
+                tessellator.addVertexWithUV(d11, d12, d15, d8, d10);
+            }
         }
     }
 }
