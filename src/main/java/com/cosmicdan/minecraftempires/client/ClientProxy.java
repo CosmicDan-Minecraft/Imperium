@@ -6,6 +6,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.cosmicdan.minecraftempires.CommonProxy;
 import com.cosmicdan.minecraftempires.client.gui.GuiLog;
+import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -18,6 +19,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
+        // register custom renderers
+        ModRenderers.registerAll();
     }
     
     @Override

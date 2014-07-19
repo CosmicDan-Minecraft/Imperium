@@ -3,6 +3,7 @@ package com.cosmicdan.minecraftempires.blocks;
 import java.util.Iterator;
 import java.util.Random;
 
+import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
 import com.cosmicdan.minecraftempires.items.ModItems;
 
 import cpw.mods.fml.relauncher.Side;
@@ -141,15 +142,15 @@ public class BlockStickShelter extends BlockDirectional {
      * Gets the block's texture. Args: side, meta
      */
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_)
+    public IIcon getIcon(int side, int meta)
     {
-        if (p_149691_1_ == 0) {
-            return Blocks.planks.getBlockTextureFromSide(p_149691_1_);
+        if (side == 0) {
+            return Blocks.planks.getBlockTextureFromSide(side);
         } else {
-            int k = getDirection(p_149691_2_);
-            int l = Direction.bedDirection[k][p_149691_1_];
-            int i1 = isBlockHeadOfBed(p_149691_2_) ? 1 : 0;
-            return (i1 != 1 || l != 2) && (i1 != 0 || l != 3) ? (l != 5 && l != 4 ? this.bedIconTop[i1] : this.bedIconSide[i1]) : this.bedIconEnd[i1];
+            int direction = getDirection(meta);
+            int bedDirection = Direction.bedDirection[direction][side];
+            int isHead = isBlockHeadOfBed(meta) ? 1 : 0;
+            return (isHead != 1 || bedDirection != 2) && (isHead != 0 || bedDirection != 3) ? (bedDirection != 5 && bedDirection != 4 ? this.bedIconTop[isHead] : this.bedIconSide[isHead]) : this.bedIconEnd[isHead];
         }
     }
 
@@ -164,8 +165,7 @@ public class BlockStickShelter extends BlockDirectional {
      * The type of render function that is called for this block
      */
     public int getRenderType() {
-        // TODO: 14 is renderBlockBed, this would have to be over-ridden and customized to draw a "sloped" top surface
-        return 14;
+        return ModRenderers.rendererStickShelter;
     }
 
     /**
