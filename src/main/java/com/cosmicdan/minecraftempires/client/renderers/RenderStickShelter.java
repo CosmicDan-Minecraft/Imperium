@@ -122,21 +122,41 @@ public class RenderStickShelter extends RendererCommon implements ISimpleBlockRe
             tessellator.addVertexWithUV(xMax, yMin, zMin, d4, d6);
             tessellator.addVertexWithUV(xMin, yMax, zMin, d5, d7);
             tessellator.addVertexWithUV(xMin, yMax, zMax, d9, d11);
+            // 2-sided
+            tessellator.addVertexWithUV(xMin, yMax, zMax, d9, d11);
+            tessellator.addVertexWithUV(xMin, yMax, zMin, d5, d7);
+            tessellator.addVertexWithUV(xMax, yMin, zMin, d4, d6);
+            tessellator.addVertexWithUV(xMax, yMin, zMax, d8, d10);
         } else if (i1 == 1) { // West
             tessellator.addVertexWithUV(xMax, yMax, zMax, d8, d10);
             tessellator.addVertexWithUV(xMax, yMin, zMin, d4, d6);
             tessellator.addVertexWithUV(xMin, yMin, zMin, d5, d7);
             tessellator.addVertexWithUV(xMin, yMax, zMax, d9, d11);
+            // 2-sided
+            tessellator.addVertexWithUV(xMin, yMax, zMax, d9, d11);
+            tessellator.addVertexWithUV(xMin, yMin, zMin, d5, d7);
+            tessellator.addVertexWithUV(xMax, yMin, zMin, d4, d6);
+            tessellator.addVertexWithUV(xMax, yMax, zMax, d8, d10);
         } else if (i1 == 2) { // North
             tessellator.addVertexWithUV(xMax, yMax, zMax, d8, d10);
             tessellator.addVertexWithUV(xMax, yMax, zMin, d4, d6);
             tessellator.addVertexWithUV(xMin, yMin, zMin, d5, d7);
             tessellator.addVertexWithUV(xMin, yMin, zMax, d9, d11);
+            // 2-sided
+            tessellator.addVertexWithUV(xMin, yMin, zMax, d9, d11);
+            tessellator.addVertexWithUV(xMin, yMin, zMin, d5, d7);
+            tessellator.addVertexWithUV(xMax, yMax, zMin, d4, d6);
+            tessellator.addVertexWithUV(xMax, yMax, zMax, d8, d10);
         } else { // East
             tessellator.addVertexWithUV(xMax, yMin, zMax, d8, d10);
             tessellator.addVertexWithUV(xMax, yMax, zMin, d4, d6);
             tessellator.addVertexWithUV(xMin, yMax, zMin, d5, d7);
             tessellator.addVertexWithUV(xMin, yMin, zMax, d9, d11);
+            // 2-sided
+            tessellator.addVertexWithUV(xMin, yMin, zMax, d9, d11);
+            tessellator.addVertexWithUV(xMin, yMax, zMin, d5, d7);
+            tessellator.addVertexWithUV(xMax, yMax, zMin, d4, d6);
+            tessellator.addVertexWithUV(xMax, yMin, zMax, d8, d10);
         }
         
         
@@ -167,7 +187,9 @@ public class RenderStickShelter extends RendererCommon implements ISimpleBlockRe
             tessellator.setBrightness(this.renderMinZ > 0.0D ? j1 : block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ - 1));
             tessellator.setColorOpaque_F(f2, f2, f2);
             this.flipTexture = (b0 == 2);
-            this.renderFaceZNeg(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 2));
+            this.renderFaceZNeg(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 2), false);
+            //2-sided
+            this.renderFaceZNeg(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 2), true);
         }
 
         if (k1 != 3 && i1 != 3 && (this.renderAllFaces || block.shouldSideBeRendered(blockAccess, posX, posY, posZ + 1, 3)))
@@ -175,25 +197,30 @@ public class RenderStickShelter extends RendererCommon implements ISimpleBlockRe
             tessellator.setBrightness(this.renderMaxZ < 1.0D ? j1 : block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ + 1));
             tessellator.setColorOpaque_F(f2, f2, f2);
             this.flipTexture = (b0 == 3);
-            this.renderFaceZPos(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 3));
+            this.renderFaceZPos(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 3), false);
+            //2-sided
+            this.renderFaceZPos(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 3), true);
+
         }
 
         if (k1 != 4 && i1 != 2 && (this.renderAllFaces || block.shouldSideBeRendered(blockAccess, posX - 1, posY, posZ, 4)))
         {
             tessellator.setBrightness(this.renderMinZ > 0.0D ? j1 : block.getMixedBrightnessForBlock(blockAccess, posX - 1, posY, posZ));
             tessellator.setColorOpaque_F(f3, f3, f3);
-            this.flipTexture = b0 == 4 || b0 == 3 || b0 == 2;
-            System.out.println("a" + b0);
-            this.renderFaceXNeg(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 4));
+            this.flipTexture = (b0 == 4 || b0 == 3 || b0 == 2);
+            this.renderFaceXNeg(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 4), false);
+            //2-sided
+            this.renderFaceXNeg(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 4), true);
         }
 
         if (k1 != 5 && i1 != 0 && (this.renderAllFaces || block.shouldSideBeRendered(blockAccess, posX + 1, posY, posZ, 5)))
         {
             tessellator.setBrightness(this.renderMaxZ < 1.0D ? j1 : block.getMixedBrightnessForBlock(blockAccess, posX + 1, posY, posZ));
             tessellator.setColorOpaque_F(f3, f3, f3);
-            this.flipTexture = b0 == 5 || b0 == 3 || b0 == 2;
-            System.out.println("b" + b0);
-            this.renderFaceXPos(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 5));
+            this.flipTexture = (b0 == 5 || b0 == 3 || b0 == 2);
+            this.renderFaceXPos(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 5), false);
+            //2-sided
+            this.renderFaceXPos(block, (double)posX, (double)posY, (double)posZ, block.getIcon(blockAccess, posX, posY, posZ, 5), true);
         }
         
 
