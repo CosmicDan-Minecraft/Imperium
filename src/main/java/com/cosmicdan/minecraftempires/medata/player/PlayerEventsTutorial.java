@@ -10,7 +10,7 @@ import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.Essent
 
 public class PlayerEventsTutorial {
     public enum TutorialEvents {
-        WOODPUNCH,
+        WOODPUNCH, BRUSHWOOD,
     }
     
     public static void eventTutorial(EntityPlayerMP player, TutorialEvents event) {
