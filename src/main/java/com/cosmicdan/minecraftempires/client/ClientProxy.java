@@ -3,10 +3,13 @@ package com.cosmicdan.minecraftempires.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 
 import com.cosmicdan.minecraftempires.CommonProxy;
+import com.cosmicdan.minecraftempires.client.gui.GuiCompass;
 import com.cosmicdan.minecraftempires.client.gui.GuiLog;
 import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
+import com.cosmicdan.minecraftempires.eventhandlers.WorldEvents;
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -31,6 +34,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
+        MinecraftForge.EVENT_BUS.register(new GuiCompass(Minecraft.getMinecraft()));
     }
     
     @Override
