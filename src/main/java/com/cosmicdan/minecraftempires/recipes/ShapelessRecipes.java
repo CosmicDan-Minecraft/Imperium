@@ -19,6 +19,9 @@ public class ShapelessRecipes {
                 new ItemStack(ModItems.stickshelter, 1),
                 // Recipe ingredients - 4x Brushwood
                 new Object[] {itemStackBrushwood, itemStackBrushwood, itemStackBrushwood, itemStackBrushwood});
+        GameRegistry.addShapelessRecipe(
+                new ItemStack(Items.stick, 1),
+                new Object[] {itemStackBrushwood});
     }
     
     public static void addAll() {
