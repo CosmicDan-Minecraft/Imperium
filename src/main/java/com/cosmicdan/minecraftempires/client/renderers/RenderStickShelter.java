@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class RenderStickShelter extends RendererCommon implements ISimpleBlockRenderingHandler {
+public final class RenderStickShelter extends RendererCommon implements ISimpleBlockRenderingHandler {
     
     
     
