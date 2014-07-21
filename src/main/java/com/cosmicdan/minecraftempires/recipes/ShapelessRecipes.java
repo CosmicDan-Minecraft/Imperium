@@ -14,13 +14,9 @@ public class ShapelessRecipes {
     private static void recipeShelter() {
         // declare item stacks for recipe ingredients. Bit misleading, "ItemStack" is just a type meaning the item in an inventory (doesn't mean more than 1)
         ItemStack itemStackBrushwood = new ItemStack(ModItems.brushwood);
-        // For now, 4 Brushwood just makes a bed. Todo:
-        //  - Make it a custom "Shelter" bed
-        //  - Duplicate vanilla bed code, but shelter has a 100% chance to "break" when player awakes (hard)
-        //  - Make a model for it (even harder)
         GameRegistry.addShapelessRecipe(
-                // Recipe result - a bed
-                new ItemStack(Items.bed, 1),
+                // Recipe result - stick shelter
+                new ItemStack(ModItems.stickshelter, 1),
                 // Recipe ingredients - 4x Brushwood
                 new Object[] {itemStackBrushwood, itemStackBrushwood, itemStackBrushwood, itemStackBrushwood});
     }
