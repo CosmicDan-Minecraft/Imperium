@@ -48,7 +48,6 @@ public class EntityEvents {
                 }
             }
         }
-        event.setResult(Result.ALLOW);
     }
     
     @SubscribeEvent
