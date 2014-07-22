@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.cosmicdan.minecraftempires.blocks.BlockBrushwood;
 import com.cosmicdan.minecraftempires.blocks.ModBlocks;
+import com.cosmicdan.minecraftempires.entities.tiles.ModTileEntities;
 import com.cosmicdan.minecraftempires.eventhandlers.BlockEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.PlayerEvents;
 import com.cosmicdan.minecraftempires.eventhandlers.EventHandlerRestrictions;
@@ -67,6 +68,9 @@ public class Main
 
         // world generation
         GameRegistry.registerWorldGenerator(new WorldGen(), 1);
+        
+        // tile entities
+        ModTileEntities.addTileEntities();
 
         // hook events for restrictions
         MinecraftForge.EVENT_BUS.register(new EventHandlerRestrictions());

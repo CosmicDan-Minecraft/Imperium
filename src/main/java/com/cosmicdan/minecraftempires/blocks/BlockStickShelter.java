@@ -57,8 +57,7 @@ public class BlockStickShelter extends BlockDirectional {
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World world, int blockX, int blockY, int blockZ, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
+    public boolean onBlockActivated(World world, int blockX, int blockY, int blockZ, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (world.isRemote) {
             return true;
         } else {

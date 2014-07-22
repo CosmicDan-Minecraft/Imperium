@@ -6,9 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public final class RenderCampfire extends RendererCommon implements ISimpleBlockRenderingHandler {
     
@@ -21,6 +23,7 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
         Tessellator tessellator = Tessellator.instance;
         // start drawing
         tessellator.addTranslation(posX, posY, posZ);
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ));
         // southern face (starting bottom-right corner, going anti-clockwise)
             IIcon iicon = block.getIcon(0, 0);
             float u = iicon.getMinU();
@@ -81,6 +84,40 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
             tessellator.addVertexWithUV(0.25, 1, 1, u, v);
             tessellator.addVertexWithUV(0.25, 1, 0, U, v);
             tessellator.addVertexWithUV(1, 0, 0, U, V);
+        // check metadata for additional drawing
+            int blockMeta = blockAccess.getBlockMetadata(posX, posY, posZ);
+            //thisBlock.setLightLevel(0F);
+            if (blockMeta > 0) {
+                // is on fire, draw the fire
+                iicon = Blocks.fire.getIcon(0, 0);
+                u = iicon.getMinU();
+                v = iicon.getMinV();
+                U = iicon.getMaxU();
+                V = iicon.getMaxV();
+                tessellator.addVertexWithUV(1, 0, 1, U, V);
+                tessellator.addVertexWithUV(1, 1, 1, U, v);
+                tessellator.addVertexWithUV(0, 1, 0, u, v);
+                tessellator.addVertexWithUV(0, 0, 0, u, V);
+                // 2-sided
+                tessellator.addVertexWithUV(0, 0, 0, u, V);
+                tessellator.addVertexWithUV(0, 1, 0, u, v);
+                tessellator.addVertexWithUV(1, 1, 1, U, v);
+                tessellator.addVertexWithUV(1, 0, 1, U, V);
+                // now the other axis
+                tessellator.addVertexWithUV(1, 0, 0, U, V);
+                tessellator.addVertexWithUV(1, 1, 0, U, v);
+                tessellator.addVertexWithUV(0, 1, 1, u, v);
+                tessellator.addVertexWithUV(0, 0, 1, u, V);
+                // also 2-sided
+                tessellator.addVertexWithUV(0, 0, 1, u, V);
+                tessellator.addVertexWithUV(0, 1, 1, u, v);
+                tessellator.addVertexWithUV(1, 1, 0, U, v);
+                tessellator.addVertexWithUV(1, 0, 0, U, V);
+                // update light value and notify neighbors
+                Block thisBlock = blockAccess.getBlock(posX, posY, posZ);
+                //thisBlock.setLightLevel(1F);
+                //System.out.println("CAMPFIRE BURNING!");
+            }
         // end drawing
         tessellator.addTranslation(-posX, -posY, -posZ);
         return false;
