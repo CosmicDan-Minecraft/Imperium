@@ -1,6 +1,10 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
+import java.util.Iterator;
+
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -11,6 +15,7 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
+import com.cosmicdan.minecraftempires.ai.EntityAIFlockMentality;
 import com.cosmicdan.minecraftempires.items.ModItems;
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsTutorial.TutorialEvents;
@@ -65,16 +70,28 @@ public class EntityEvents {
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if(!event.entity.worldObj.isRemote) {
             if (event.entity instanceof EntityAnimal) {
-                // make animals run away from the player
                 EntityAnimal entityAnimal = (EntityAnimal) event.entity;
                 if (entityAnimal.tasks.taskEntries.size() > 0) { // ensure it actually uses the new AI, just in case
-                    /*
-                     *  - First int of addTask seems to be priority
-                     *  theEntity, targetEntityClass, distanceFromEntity, farSpeed, nearSpeed
-                     *  - distanceFromEntity - no idea how this is measured but it seems to be close to block distance
-                     *  - farSpeed and nearSpeed are multipliers of their base speed
-                     */
-                    entityAnimal.tasks.addTask(1, new EntityAIAvoidEntity(entityAnimal, EntityPlayer.class, 6.0F, 1.5D, 2.0D));
+                    EntityAIBase taskToReplace = null; // initialize with a stupid value to stop precompiler complaining
+                    int priorityToReplace = -1; // as above
+                    
+                    // TODO: This is a bit costly. Must be a better way.
+                    Iterator taskEntries = entityAnimal.tasks.taskEntries.iterator();
+                    while (taskEntries.hasNext()) {
+                        EntityAITasks.EntityAITaskEntry taskEntry = (EntityAITasks.EntityAITaskEntry)taskEntries.next();
+                        // Replace the 'EntityAIWander' task with our own 'EntityAIFlockMentality'
+                        if (taskEntry.action instanceof net.minecraft.entity.ai.EntityAIWander) {
+                            taskToReplace = taskEntry.action;
+                            priorityToReplace = taskEntry.priority;
+                        }
+                    }
+                    
+                    if (taskToReplace != null) {
+                        entityAnimal.tasks.removeTask(taskToReplace);
+                        entityAnimal.tasks.addTask(priorityToReplace, new EntityAIFlockMentality(entityAnimal, 1.0D));
+                        //TODO: EntityAIAvoidEntity needs to be integrated with the new EntityAIFlockMentality
+                        entityAnimal.tasks.addTask(priorityToReplace, new EntityAIAvoidEntity(entityAnimal, EntityPlayer.class, 6.0F, 1.5D, 2.0D));
+                    }
                 }
             }
         }
