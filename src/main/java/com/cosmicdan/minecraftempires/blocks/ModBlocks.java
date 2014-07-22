@@ -7,6 +7,7 @@ public final class ModBlocks {
     public static Block brushwood;
     public static Block stickshelter;
     public static Block campfire;
+    public static Block campfireLit;
     
     public static final void addBlocks() {
         brushwood = new BlockBrushwood();
@@ -15,5 +16,7 @@ public final class ModBlocks {
         GameRegistry.registerBlock(stickshelter, "blockStickShelter");
         campfire = new BlockCampfire();
         GameRegistry.registerBlock(campfire, "blockCampfire");
+        campfireLit = new BlockCampfireLit();
+        GameRegistry.registerBlock(campfireLit, "blockCampfireLit");
     }
 }

@@ -27,9 +27,7 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
     public String eventListPending;
     public String eventListPendingInstant;
     
-    public SyncPlayerME() {
-        
-    }
+    public SyncPlayerME() {}
 
     public SyncPlayerME(EntityPlayer player) {
         MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(player);

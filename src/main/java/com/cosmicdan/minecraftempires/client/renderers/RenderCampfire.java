@@ -26,6 +26,8 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
         // start drawing
         tessellator.addTranslation(posX, posY, posZ);
         tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ));
+        // No idea what this is for but it fixes messed up color tint
+        tessellator.setColorOpaque_F(0.5F, 0.5F, 0.5F);
         // southern face (starting bottom-right corner, going anti-clockwise)
             IIcon iicon = block.getIcon(0, 0);
             float u = iicon.getMinU();
@@ -86,9 +88,8 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
             tessellator.addVertexWithUV(0.25, 1, 1, u, v);
             tessellator.addVertexWithUV(0.25, 1, 0, U, v);
             tessellator.addVertexWithUV(1, 0, 0, U, V);
-        // check metadata for additional drawing
+        // check metadata to see if it's a lit campfire
             int blockMeta = blockAccess.getBlockMetadata(posX, posY, posZ);
-            //thisBlock.setLightLevel(0F);
             if (blockMeta > 0) {
                 // is on fire, draw the fire
                 iicon = Blocks.fire.getIcon(0, 0);
@@ -116,7 +117,6 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
                 tessellator.addVertexWithUV(1, 1, 0, U, v);
                 tessellator.addVertexWithUV(1, 0, 0, U, V);
                 // tell the server that there was a block update
-                DoBlockUpdate.sync(posX, posY, posZ, (short)0);
             }
         // end drawing
         tessellator.addTranslation(-posX, -posY, -posZ);

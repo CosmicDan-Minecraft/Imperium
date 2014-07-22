@@ -3,6 +3,7 @@ item.Brushwood.name=Brushwood
 tile.StickShelter.name=Stick Shelter
 item.StickShelter.name=Stick Shelter
 tile.Campfire.name=Campfire
+tile.CampfireLit.name=Burning Campfire
 
 item.PlayerLog.name=Player 'Log'
 

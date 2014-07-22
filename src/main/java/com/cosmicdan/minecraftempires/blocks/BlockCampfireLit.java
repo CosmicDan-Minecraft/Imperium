@@ -22,17 +22,19 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockCampfire extends Block {
+public class BlockCampfireLit extends BlockContainer {
     
     private IIcon[] campfireIcon = new IIcon[4];
     
-    public BlockCampfire() {
-        super(Material.vine);
-        setBlockName("Campfire");
+    public BlockCampfireLit() {
+        super(Material.fire);
+        setBlockName("CampfireLit");
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setLightOpacity(255);
+        setLightLevel(1.0F);
+        //setBlockTextureName("minecraftempires:campfire_side0");
     }
-    
+    /*
     @Override
     public Item getItemDropped(int metadata, Random random, int fortune) {
         return ModItems.brushwood;
@@ -42,6 +44,19 @@ public class BlockCampfire extends Block {
     public int quantityDropped(Random random) {
         return 2;
     }
+    */
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        //TileEntityCampfire tileEntity = new TileEntityCampfire();
+        //tileEntity.setData(world, metadata);
+        //return tileEntity;
+        return new TileEntityCampfire(world, metadata);
+    }
+    
+    @Override
+    public void onBlockAdded(World world, int posX, int posY, int posZ) {
+        world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
+    }
     
     @Override
     public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
@@ -49,14 +64,20 @@ public class BlockCampfire extends Block {
             if (player.getHeldItem() == null)
                 return true;
             Item playerItem = player.getHeldItem().getItem();
-            if (player.getHeldItem().getItem() == Items.stick) {
-                //world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
-                world.setBlockToAir(posX, posY, posZ);
-                world.setBlock(posX, posY, posZ, ModBlocks.campfireLit, 1, 3);
+            int blockMeta = world.getBlockMetadata(posX, posY, posZ);
+            if (blockMeta == 1 ) {
+                // campfire burning, not cooking
+                Item item = player.getHeldItem().getItem();
             }
         }
         //world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
         return true;
+    }
+    
+
+    @Override
+    public int getLightValue(IBlockAccess world, int posX, int posY, int posZ) {
+        return 15;
     }
    
     /*
@@ -65,7 +86,7 @@ public class BlockCampfire extends Block {
     public boolean renderAsNormalBlock() {
          return false;
     }
- 
+    
     public boolean isOpaqueCube() {
          return false;
     }
