@@ -27,13 +27,9 @@ public class TileEntityCampfire extends TileEntity {
     public void readFromNBT(NBTTagCompound entityData) {
         super.readFromNBT(entityData);
         this.isCooking = entityData.getBoolean("isCooking");
-        System.out.println(xCoord + "/" + yCoord + "/" + zCoord);
         if (this.hasWorldObj()) {
-            System.out.println("hasWorldObj");
-            System.out.println(metadata);
             if (metadata > 0) {
-                worldObj.getBlock(xCoord, yCoord, zCoord).setLightLevel(1.0F);
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                // nothing yet
             }
         }
     }

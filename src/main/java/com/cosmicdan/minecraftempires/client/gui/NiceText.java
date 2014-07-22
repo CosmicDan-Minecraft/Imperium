@@ -55,7 +55,6 @@ public class NiceText {
         int lineThisPage = 0;
         int lineTotal = 0;
         for (String line : wrapped) {
-            //System.out.println(line);
             lineThisPage++;
             lineTotal++;
             pageLines.add(line);

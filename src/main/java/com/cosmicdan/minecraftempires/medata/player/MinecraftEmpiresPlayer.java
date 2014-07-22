@@ -77,7 +77,6 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         this.eventListPending = stringToArrayList(playerProps.getString("eventListPending"));
         this.eventListPendingInstant = stringToArrayList(playerProps.getString("eventListPendingInstant"));
         if (this.eventListPendingInstant.size() > 0) {
-            //System.out.println(">>> Player has pending events!");
             WorldTickEvents.eventPendingInstant = true;
             WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)player);
         }
