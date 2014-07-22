@@ -12,5 +12,7 @@ public class PacketHandler {
         packetReq.registerMessage(SyncPlayerME.class, SyncPlayerME.class, 0, Side.CLIENT);
         // Register EntityPlayerME for updates FROM clients (e.g. events and quests triggered)
         packetReq.registerMessage(SyncPlayerME.class, SyncPlayerME.class, 1, Side.SERVER);
+        // Register packet for clients to tell server to update a block (e.g. for lighting)
+        packetReq.registerMessage(DoBlockUpdate.class, DoBlockUpdate.class, 2, Side.SERVER);
     }
 }

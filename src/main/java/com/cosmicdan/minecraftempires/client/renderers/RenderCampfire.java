@@ -1,5 +1,7 @@
 package com.cosmicdan.minecraftempires.client.renderers;
 
+import com.cosmicdan.minecraftempires.server.DoBlockUpdate;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -113,10 +115,8 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
                 tessellator.addVertexWithUV(0, 1, 1, u, v);
                 tessellator.addVertexWithUV(1, 1, 0, U, v);
                 tessellator.addVertexWithUV(1, 0, 0, U, V);
-                // update light value and notify neighbors
-                Block thisBlock = blockAccess.getBlock(posX, posY, posZ);
-                //thisBlock.setLightLevel(1F);
-                //System.out.println("CAMPFIRE BURNING!");
+                // tell the server that there was a block update
+                DoBlockUpdate.sync(posX, posY, posZ, (short)0);
             }
         // end drawing
         tessellator.addTranslation(-posX, -posY, -posZ);
