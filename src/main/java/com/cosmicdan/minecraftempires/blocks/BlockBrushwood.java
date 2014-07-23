@@ -20,7 +20,7 @@ public class BlockBrushwood extends Block {
             // remember to set the real name in language file
             setBlockName("Brushwood");
             // x, y, z offset; x, y, z size
-            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
+            setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 1.0F);
             // set graphic
             setBlockTextureName("minecraftempires:brushwood");
             // setup the hook for 'updateTick'. I think this should be removed because I have tickRate (or I should remove tickRate?)
