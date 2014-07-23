@@ -16,6 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
@@ -24,7 +26,7 @@ import net.minecraft.world.World;
 
 public class BlockCampfireLit extends BlockContainer {
     
-    private IIcon[] campfireIcon = new IIcon[4];
+    private IIcon[] campfireIcon = new IIcon[6];
     
     public BlockCampfireLit() {
         super(Material.fire);
@@ -45,9 +47,6 @@ public class BlockCampfireLit extends BlockContainer {
     */
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        //TileEntityCampfire tileEntity = new TileEntityCampfire();
-        //tileEntity.setData(world, metadata);
-        //return tileEntity;
         return new TileEntityCampfire(world, metadata);
     }
     
@@ -61,14 +60,26 @@ public class BlockCampfireLit extends BlockContainer {
         if (!world.isRemote) {
             if (player.getHeldItem() == null)
                 return true;
+            boolean needUpdate = false;
             Item playerItem = player.getHeldItem().getItem();
             int blockMeta = world.getBlockMetadata(posX, posY, posZ);
             if (blockMeta == 1 ) {
                 // campfire burning, not cooking
                 Item item = player.getHeldItem().getItem();
+                // check for foods
+                if (item instanceof ItemFood) {
+                    // check for cookable meats
+                    if (item == Items.beef || item == Items.chicken || item == Items.fish || item == Items.porkchop) {
+                        TileEntityCampfire tileEntity = (TileEntityCampfire) world.getTileEntity(posX, posY, posZ);
+                        ItemStack itemStack = player.getHeldItem();
+                        if (tileEntity.tryAddItem(itemStack))
+                            --itemStack.stackSize;
+                    }
+                }
             }
+            if (needUpdate)
+                world.markBlockForUpdate(posX, posY, posZ);
         }
-        //world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
         return true;
     }
     
@@ -97,9 +108,13 @@ public class BlockCampfireLit extends BlockContainer {
      * Icon stuff for textures
      */
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (side < 4)
-            return this.campfireIcon[side];
+    public IIcon getIcon(int icon, int meta) {
+        if (icon < 4) {
+            if (meta != 2)
+                return this.campfireIcon[icon];
+            else
+                return this.campfireIcon[icon + 4];
+        }
         else
             return this.campfireIcon[0];
     }
@@ -110,5 +125,7 @@ public class BlockCampfireLit extends BlockContainer {
         this.campfireIcon[1] = iconRegistry.registerIcon("minecraftempires:campfire_side1");
         this.campfireIcon[2] = iconRegistry.registerIcon("minecraftempires:campfire_side2");
         this.campfireIcon[3] = iconRegistry.registerIcon("minecraftempires:campfire_side3");
+        this.campfireIcon[4] = iconRegistry.registerIcon("minecraftempires:campfire_strut");
+        this.campfireIcon[5] = iconRegistry.registerIcon("minecraftempires:campfire_spitrod");
     }
 }

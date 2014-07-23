@@ -1,7 +1,12 @@
 package com.cosmicdan.minecraftempires.entities.tiles;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -14,7 +19,7 @@ public class TileEntityCampfire extends TileEntity {
     private int metadata;
     private boolean isCooking;
     private int entityLifeCurrent = 0;
-    private int entityLifeMax = (int) (entityMaxLife * 60 * 20); 
+    private int entityLifeMax = (int) (entityMaxLife * 60 * 20);
     
     public TileEntityCampfire() {}
     
@@ -27,17 +32,25 @@ public class TileEntityCampfire extends TileEntity {
     public void writeToNBT(NBTTagCompound entityData) {
         super.writeToNBT(entityData);
         entityData.setBoolean("isCooking", isCooking);
+        entityData.setInteger("life", entityLifeCurrent);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound entityData) {
         super.readFromNBT(entityData);
         this.isCooking = entityData.getBoolean("isCooking");
+        this.entityLifeCurrent = entityData.getInteger("life");
         if (this.hasWorldObj()) {
             if (metadata > 0) {
                 // nothing yet
             }
         }
+    }
+    
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        writeToNBT(tagCompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tagCompound);
     }
     
     @Override
@@ -49,6 +62,13 @@ public class TileEntityCampfire extends TileEntity {
                 selfDestruct();
             }
         }
+    }
+    
+    public boolean tryAddItem(ItemStack itemStack) {
+        //item.getIconFromDamage(0);
+        //FurnaceRecipes.smelting().getSmeltingResult(itemStack);
+        System.out.println(itemStack.getDisplayName());
+        return true;
     }
     
     private void selfDestruct() {
