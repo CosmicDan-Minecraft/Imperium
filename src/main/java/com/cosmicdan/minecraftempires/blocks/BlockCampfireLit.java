@@ -30,9 +30,7 @@ public class BlockCampfireLit extends BlockContainer {
         super(Material.fire);
         setBlockName("CampfireLit");
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        setLightOpacity(255);
         setLightLevel(1.0F);
-        //setBlockTextureName("minecraftempires:campfire_side0");
     }
     /*
     @Override

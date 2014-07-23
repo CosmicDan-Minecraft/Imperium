@@ -23,17 +23,52 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
 
     public boolean renderWorldBlock(IBlockAccess blockAccess, int posX, int posY, int posZ, Block block, int modelId, RenderBlocks renderer) {
         Tessellator tessellator = Tessellator.instance;
+        IIcon iicon;
+        float u;
+        float v;
+        float U;
+        float V;
         // start drawing
         tessellator.addTranslation(posX, posY, posZ);
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ));
         // No idea what this is for but it fixes messed up color tint
         tessellator.setColorOpaque_F(0.5F, 0.5F, 0.5F);
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ));
+        // check metadata to see if it's a lit campfire
+        int blockMeta = blockAccess.getBlockMetadata(posX, posY, posZ);
+        if (blockMeta > 0) {
+            // is on fire, draw the fire
+            iicon = Blocks.fire.getIcon(0, 0);
+            u = iicon.getMinU();
+            v = iicon.getMinV();
+            U = iicon.getMaxU();
+            V = iicon.getMaxV();
+            tessellator.addVertexWithUV(1, 0, 1, U, V);
+            tessellator.addVertexWithUV(1, 1, 1, U, v);
+            tessellator.addVertexWithUV(0, 1, 0, u, v);
+            tessellator.addVertexWithUV(0, 0, 0, u, V);
+            // 2-sided
+            tessellator.addVertexWithUV(0, 0, 0, u, V);
+            tessellator.addVertexWithUV(0, 1, 0, u, v);
+            tessellator.addVertexWithUV(1, 1, 1, U, v);
+            tessellator.addVertexWithUV(1, 0, 1, U, V);
+            // now the other axis
+            tessellator.addVertexWithUV(1, 0, 0, U, V);
+            tessellator.addVertexWithUV(1, 1, 0, U, v);
+            tessellator.addVertexWithUV(0, 1, 1, u, v);
+            tessellator.addVertexWithUV(0, 0, 1, u, V);
+            // also 2-sided
+            tessellator.addVertexWithUV(0, 0, 1, u, V);
+            tessellator.addVertexWithUV(0, 1, 1, u, v);
+            tessellator.addVertexWithUV(1, 1, 0, U, v);
+            tessellator.addVertexWithUV(1, 0, 0, U, V);
+        }
+        
         // southern face (starting bottom-right corner, going anti-clockwise)
-            IIcon iicon = block.getIcon(0, 0);
-            float u = iicon.getMinU();
-            float v = iicon.getMinV();
-            float U = iicon.getMaxU();
-            float V = iicon.getMaxV();
+            iicon = block.getIcon(0, 0);
+            u = iicon.getMinU();
+            v = iicon.getMinV();
+            U = iicon.getMaxU();
+            V = iicon.getMaxV();
             tessellator.addVertexWithUV(1, 0, 1, U, V);
             tessellator.addVertexWithUV(1, 1, 0.25, U, v);
             tessellator.addVertexWithUV(0, 1, 0.25, u, v);
@@ -88,36 +123,6 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
             tessellator.addVertexWithUV(0.25, 1, 1, u, v);
             tessellator.addVertexWithUV(0.25, 1, 0, U, v);
             tessellator.addVertexWithUV(1, 0, 0, U, V);
-        // check metadata to see if it's a lit campfire
-            int blockMeta = blockAccess.getBlockMetadata(posX, posY, posZ);
-            if (blockMeta > 0) {
-                // is on fire, draw the fire
-                iicon = Blocks.fire.getIcon(0, 0);
-                u = iicon.getMinU();
-                v = iicon.getMinV();
-                U = iicon.getMaxU();
-                V = iicon.getMaxV();
-                tessellator.addVertexWithUV(1, 0, 1, U, V);
-                tessellator.addVertexWithUV(1, 1, 1, U, v);
-                tessellator.addVertexWithUV(0, 1, 0, u, v);
-                tessellator.addVertexWithUV(0, 0, 0, u, V);
-                // 2-sided
-                tessellator.addVertexWithUV(0, 0, 0, u, V);
-                tessellator.addVertexWithUV(0, 1, 0, u, v);
-                tessellator.addVertexWithUV(1, 1, 1, U, v);
-                tessellator.addVertexWithUV(1, 0, 1, U, V);
-                // now the other axis
-                tessellator.addVertexWithUV(1, 0, 0, U, V);
-                tessellator.addVertexWithUV(1, 1, 0, U, v);
-                tessellator.addVertexWithUV(0, 1, 1, u, v);
-                tessellator.addVertexWithUV(0, 0, 1, u, V);
-                // also 2-sided
-                tessellator.addVertexWithUV(0, 0, 1, u, V);
-                tessellator.addVertexWithUV(0, 1, 1, u, v);
-                tessellator.addVertexWithUV(1, 1, 0, U, v);
-                tessellator.addVertexWithUV(1, 0, 0, U, V);
-                // tell the server that there was a block update
-            }
         // end drawing
         tessellator.addTranslation(-posX, -posY, -posZ);
         return false;
