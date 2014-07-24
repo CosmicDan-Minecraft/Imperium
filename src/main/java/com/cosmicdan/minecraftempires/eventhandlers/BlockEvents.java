@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 
 import com.cosmicdan.minecraftempires.Main;
 import com.cosmicdan.minecraftempires.blocks.ModBlocks;
@@ -41,6 +42,14 @@ public class BlockEvents {
                 }
             }
         }
+    }
+    
+    /*
+     * Note to self: This also hooks leaf decay!
+     */
+    @SubscribeEvent
+    public void onBlockHarvest(HarvestDropsEvent event) {
+        
     }
 
 }
