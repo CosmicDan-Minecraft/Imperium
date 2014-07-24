@@ -3,12 +3,15 @@ package com.cosmicdan.minecraftempires.client.renderers;
 import com.cosmicdan.minecraftempires.server.DoBlockUpdate;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -153,6 +156,35 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
                 //tessellator.addVertexWithUV(1, 1, 0.53125, U, v);
                 //tessellator.addVertexWithUV(0, 1, 0.53125, u, v);
                 //tessellator.addVertexWithUV(0, 0, 0.53125, u, V);
+                
+                //ItemStack itemStack = new ItemStack(Items.beef).getItemSpriteNumber()
+                //bindTexture(tileEntityRenderer.renderEngine.getResourceLocation(ItemStack.getItemSpriteNumber()));
+                
+                //TextureManager renderEngine = RenderManager.instance.renderEngine;
+                //ItemStack itemStack = new ItemStack(Items.beef);
+                //int itemResource = itemStack.getItemSpriteNumber();
+                //System.out.println(itemResource);
+                
+                
+                // none of this is necessary it seems, commenting these 4 lines out render the same thing
+                TextureManager renderEngine = Minecraft.getMinecraft().renderEngine;
+                ResourceLocation blockSpriteSheet = renderEngine.getResourceLocation(0);
+                ResourceLocation itemSpriteSheet = renderEngine.getResourceLocation(1);
+                renderEngine.bindTexture(itemSpriteSheet);
+                //iicon = Items.beef.getIconFromDamage(0); // same result
+                iicon = new ItemStack(Items.beef).getIconIndex();
+                u = iicon.getMinU();
+                v = iicon.getMinV();
+                U = iicon.getMaxU();
+                V = iicon.getMaxV();
+                
+                tessellator.addVertexWithUV(1, 1, 0.53125, U, V);
+                tessellator.addVertexWithUV(1, 2, 0.53125, U, v);
+                tessellator.addVertexWithUV(0, 2, 0.53125, u, v);
+                tessellator.addVertexWithUV(0, 1, 0.53125, u, V);
+                
+                // switch back to sprite sheet
+                renderEngine.bindTexture(blockSpriteSheet);
                 
                 // crash
                 //RenderItem.getInstance().renderIcon(0, 0, iicon, 16, 16);
