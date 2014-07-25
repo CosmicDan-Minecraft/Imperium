@@ -9,6 +9,7 @@ import com.cosmicdan.minecraftempires.CommonProxy;
 import com.cosmicdan.minecraftempires.client.gui.GuiCompass;
 import com.cosmicdan.minecraftempires.client.gui.GuiLog;
 import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
+import com.cosmicdan.minecraftempires.entities.tiles.ModTileEntityRenderers;
 import com.cosmicdan.minecraftempires.eventhandlers.WorldEvents;
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
 
@@ -29,6 +30,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
+        ModTileEntityRenderers.addTileEntityRenderers();
     }
     
     @Override

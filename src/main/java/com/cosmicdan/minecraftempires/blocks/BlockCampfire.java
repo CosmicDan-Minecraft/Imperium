@@ -30,6 +30,7 @@ public class BlockCampfire extends Block {
         super(Material.vine);
         setBlockName("Campfire");
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        
     }
     
     @Override
