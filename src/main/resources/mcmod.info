@@ -8,7 +8,7 @@
   "url": "",
   "updateUrl": "",
   "authorList": ["CosmicDan"],
-  "credits": "The Forge/FML guys (of course), coolAlias, diesieben07, SynthTones and Xuluf for code help/examples, Dulciphi for support",
+  "credits": "Forge/FML and MCP teams; SynthTones and 4HeadTiger for code contributions; coolAlias, diesieben07, and Xuluf for code help/examples; Dulciphi for support",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
