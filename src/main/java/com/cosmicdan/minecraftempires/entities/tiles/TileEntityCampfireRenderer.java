@@ -1,21 +1,16 @@
 package com.cosmicdan.minecraftempires.entities.tiles;
 
-import javax.swing.Icon;
-
-import org.lwjgl.opengl.GL11;
-
-import com.cosmicdan.minecraftempires.blocks.ModBlocks;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+import com.cosmicdan.minecraftempires.blocks.ModBlocks;
 
 
 
@@ -36,7 +31,7 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
     private IIcon itemIcon;
     
     public TileEntityCampfireRenderer() {
-        spitrod = ModBlocks.campfireLit.getIcon(1, 2);
+        spitrod = ModBlocks.campfireLit.getIcon(1, 7);
         spitrodMap[0] = spitrod.getMinU();
         spitrodMap[1] = spitrod.getMinV();
         spitrodMap[2] = spitrod.getMaxU();
@@ -49,7 +44,7 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
     }
     
     public void renderThisTileEntity(TileEntityCampfire tileEntity, double dx, double dy, double dz, float f) {
-        if (tileEntity.metadata == 2) { // is cooking/cooked, draw rod and items
+        if (tileEntity.metadata > 6) { // is cooking/cooked, draw rod and items
             tessellator = Tessellator.instance;
             
             // draw the spit rod
@@ -124,3 +119,4 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
         ItemRenderer.renderItemIn2D(tessellator, U, v, u, V, itemIcon.getIconWidth(), itemIcon.getIconHeight(), 0.0625F);
     }
 }
+
