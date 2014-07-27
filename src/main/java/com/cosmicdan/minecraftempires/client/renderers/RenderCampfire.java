@@ -1,27 +1,12 @@
 package com.cosmicdan.minecraftempires.client.renderers;
 
-import com.cosmicdan.minecraftempires.server.DoBlockUpdate;
-
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public final class RenderCampfire extends RendererCommon implements ISimpleBlockRenderingHandler {
     
@@ -31,7 +16,8 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
     }
 
     public boolean renderWorldBlock(IBlockAccess blockAccess, int posX, int posY, int posZ, Block block, int modelId, RenderBlocks renderer) {
-        Tessellator tessellator = Tessellator.instance;
+        
+    	Tessellator tessellator = Tessellator.instance;
         IIcon iicon;
         float u;
         float v;
@@ -44,7 +30,11 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
         tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, posX, posY, posZ));
         // check metadata to see if it's a lit campfire
         int blockMeta = blockAccess.getBlockMetadata(posX, posY, posZ);
+        
+        double metaToFire = blockMeta > 6 ? ( (blockMeta - 6)/6.0D + 0.3D ) : ( blockMeta/6.0D + 0.3D );
+        
         if (blockMeta > 0) {
+        	tessellator.setColorOpaque_F(1F, 1F, 1F);
             // is on fire, draw the fire
             iicon = Blocks.fire.getIcon(0, 0);
             u = iicon.getMinU();
@@ -52,29 +42,31 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
             U = iicon.getMaxU();
             V = iicon.getMaxV();
             tessellator.addVertexWithUV(1, 0, 1, U, V);
-            tessellator.addVertexWithUV(1, 1, 1, U, v);
-            tessellator.addVertexWithUV(0, 1, 0, u, v);
+            tessellator.addVertexWithUV(1, 0 + metaToFire, 1, U, v);
+            tessellator.addVertexWithUV(0, 0 + metaToFire, 0, u, v);
             tessellator.addVertexWithUV(0, 0, 0, u, V);
             // 2-sided
             tessellator.addVertexWithUV(0, 0, 0, u, V);
-            tessellator.addVertexWithUV(0, 1, 0, u, v);
-            tessellator.addVertexWithUV(1, 1, 1, U, v);
+            tessellator.addVertexWithUV(0, 0 + metaToFire, 0, u, v);
+            tessellator.addVertexWithUV(1, 0 + metaToFire, 1, U, v);
             tessellator.addVertexWithUV(1, 0, 1, U, V);
             // now the other axis
             tessellator.addVertexWithUV(1, 0, 0, U, V);
-            tessellator.addVertexWithUV(1, 1, 0, U, v);
-            tessellator.addVertexWithUV(0, 1, 1, u, v);
+            tessellator.addVertexWithUV(1, 0 + metaToFire, 0, U, v);
+            tessellator.addVertexWithUV(0, 0 + metaToFire, 1, u, v);
             tessellator.addVertexWithUV(0, 0, 1, u, V);
             // also 2-sided
             tessellator.addVertexWithUV(0, 0, 1, u, V);
-            tessellator.addVertexWithUV(0, 1, 1, u, v);
-            tessellator.addVertexWithUV(1, 1, 0, U, v);
+            tessellator.addVertexWithUV(0, 0 + metaToFire, 1, u, v);
+            tessellator.addVertexWithUV(1, 0 + metaToFire, 0, U, v);
             tessellator.addVertexWithUV(1, 0, 0, U, V);
             // check for cooking
-            if (blockMeta == 2) {
+            if (blockMeta > 6) {
+            	System.out.println("I AM NOT DEAD");
+            	tessellator.setColorOpaque_F(0.5F, 0.5F, 0.5F);
                 // DODGY CODE WARNING
                 // draw spit struts
-                iicon = block.getIcon(0, 2);
+                iicon = block.getIcon(0, 7);
                 u = iicon.getMinU();
                 v = iicon.getMinV();
                 U = iicon.getMaxU();
@@ -98,11 +90,11 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
                 tessellator.addVertexWithUV(0, 0, 1, u, V);
                 tessellator.addVertexWithUV(0, 1.3, 1, u, v);
                 tessellator.addVertexWithUV(0, 1.3, 0, U, v);
-                tessellator.addVertexWithUV(0, 0, 0, U, V);
+                tessellator.addVertexWithUV(0, 0, 0, U, V); 
             }
         }
-        
         // southern face (starting bottom-right corner, going anti-clockwise)
+        tessellator.setColorOpaque_F(0.5F, 0.5F, 0.5F);
             iicon = block.getIcon(0, 0);
             u = iicon.getMinU();
             v = iicon.getMinV();
@@ -172,6 +164,7 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
     }
 
     public int getRenderId() {
-        return ModRenderers.rendererStickShelter;
+        return ModRenderers.rendererCampfire;
+        // return ModRenderers.rendererStickShelter;
     }
 }
