@@ -41,7 +41,7 @@ public class EventHandlerRestrictions {
         if (!playerME.canBreakWood) {
             if (!playerME.eventListDone.toString().contains("WOODPUNCH")) {
                 playerME.addInstantEvent(TutorialEvents.WOODPUNCH);
-                playerME.syncToServer();
+                playerME.syncToServer("events");
             }
             if(event.isCancelable()) { // not sure if needed but doesn't hurt
                 event.entityPlayer.swingProgressInt = 0;

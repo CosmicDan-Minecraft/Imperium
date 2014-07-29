@@ -9,9 +9,9 @@ public class PacketHandler {
 
     public static void init() {
         // Register EntityPlayerME for updates TO clients (e.g. status and information for player GUI's)
-        packetReq.registerMessage(SyncPlayerME.class, SyncPlayerME.class, 0, Side.CLIENT);
+        packetReq.registerMessage(SyncEvents.class, SyncEvents.class, 0, Side.CLIENT);
         // Register EntityPlayerME for updates FROM clients (e.g. events and quests triggered)
-        packetReq.registerMessage(SyncPlayerME.class, SyncPlayerME.class, 1, Side.SERVER);
+        packetReq.registerMessage(SyncEvents.class, SyncEvents.class, 1, Side.SERVER);
         // Register packet for clients to tell server to update a block (e.g. for lighting)
         // Unused for the moment
         //packetReq.registerMessage(DoBlockUpdate.class, DoBlockUpdate.class, 2, Side.SERVER);

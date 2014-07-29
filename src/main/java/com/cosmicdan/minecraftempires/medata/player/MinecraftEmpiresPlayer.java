@@ -12,7 +12,7 @@ import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.Essent
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsTutorial.TutorialEvents;
 import com.cosmicdan.minecraftempires.medata.world.WorldData;
 import com.cosmicdan.minecraftempires.server.PacketHandler;
-import com.cosmicdan.minecraftempires.server.SyncPlayerME;
+import com.cosmicdan.minecraftempires.server.SyncEvents;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +38,8 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     public Long lastLogin, lastSave = 0L;
     
     public int playerAgeTier = 1; // Mirrors the faction Age, required for pre-faction mechanics  
+    
+    
     public Boolean canBreakWood = false;
     
     public MinecraftEmpiresPlayer(EntityPlayer player) {
@@ -64,7 +66,6 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         playerProps.setLong("lastSave", this.player.worldObj.getTotalWorldTime());
         playerProps.setInteger("playerAgeTier", playerAgeTier);
         playerProps.setBoolean("canBreakWood", canBreakWood);
-        
         playerData.setTag(EXT_PROP_NAME, playerProps);
     }
 
@@ -133,15 +134,17 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         
         eventListDone.add(event.toString() + "=" + WorldData.worldDay);
         notifyPlayerOfEvent();
-        syncToClient();
+        syncToClient("events");
     }
     
-    public void syncToClient() {
-        PacketHandler.packetReq.sendTo(new SyncPlayerME(player), (EntityPlayerMP)player);
+    public void syncToClient(String type) {
+        if (type == "events")
+            PacketHandler.packetReq.sendTo(new SyncEvents(player), (EntityPlayerMP)player);
     }
     
-    public void syncToServer() {
-        PacketHandler.packetReq.sendToServer(new SyncPlayerME(player));
+    public void syncToServer(String type) {
+        if (type == "events")
+            PacketHandler.packetReq.sendToServer(new SyncEvents(player));
     }
     
     /*

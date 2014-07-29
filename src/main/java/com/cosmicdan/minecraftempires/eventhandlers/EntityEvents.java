@@ -49,7 +49,7 @@ public class EntityEvents {
             if (event.item.getEntityItem().getItem() == ModItems.brushwood) {
                 if (!playerME.eventListDone.toString().contains("BRUSHWOOD")) {
                     playerME.addInstantEvent(TutorialEvents.BRUSHWOOD);
-                    playerME.syncToServer();
+                    playerME.syncToServer("events");
                 }
             }
         }
