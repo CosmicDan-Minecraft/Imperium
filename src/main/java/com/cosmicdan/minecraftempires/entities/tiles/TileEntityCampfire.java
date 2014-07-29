@@ -41,8 +41,11 @@ public class TileEntityCampfire extends TileEntity {
     /** Indicates that the tile entity has to be updated. */
     public boolean needUpdate = false;
     
-    /** Timer for entityLifetime decrement. */
+    /** Initial lifetime of the fire (incremented every tick). */
     private int entityLifeCurrent = 0;
+    
+    /** Used to set the max lifetime initial value. */
+    private int entityLifetimeMax = (int) (entityLifetime * 60 * 20);
     
     /** Used to set the food processing timer's initial value. */
     private int itemProcessMax = itemProcessTime * 20;
@@ -118,24 +121,25 @@ public class TileEntityCampfire extends TileEntity {
         if (worldObj.isRemote) return;
         entityLifeCurrent += 1;
         
-        if(entityLifeCurrent == 60*20)
+        if(entityLifeCurrent >= entityLifetimeMax)
         {
         	entityLifeCurrent = 0;
         	System.out.println(metadata + " :: " + entityLifetime);
-        	if(entityLifetime != 0){
-        	if(metadata == 1){
-        		// Ember mode derp ;D
-        		entityLifetime-=1;
+        	if(entityLifetime != 0)
+        	{
+            	if(metadata == 1)
+            	{
+            		// Ember mode derp ;D
+            		entityLifetime-=1;
+            		metadata-=1;
+            		needUpdate = true;
+            	} else
+            	{
         		metadata-=1;
-        		needUpdate = true;
-        	}
-        	else {
-        		metadata-=1;
         		entityLifetime-=1;
         		needUpdate = true;
-        	}
-        	}
-        	else
+            	}
+        	} else
         		this.worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.campfire, 0, 3);
         }
         // tick cooking stuff
