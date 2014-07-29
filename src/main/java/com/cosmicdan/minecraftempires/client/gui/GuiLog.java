@@ -27,7 +27,7 @@ public class GuiLog extends GuiScreen {
     private static final int BUTTON_NEXT = 1;
     private static final int BUTTON_PREV = 2;
     private static final int guiWidthHeight = 230;
-    private static final int guiContentWidth = 144;
+    private static final int guiContentWidth = 138;
     private static final int guiContentHeight = 180;
     
     private EntityPlayer player;
