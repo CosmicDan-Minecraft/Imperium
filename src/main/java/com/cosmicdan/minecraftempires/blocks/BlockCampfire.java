@@ -2,25 +2,20 @@ package com.cosmicdan.minecraftempires.blocks;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+
 import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
-import com.cosmicdan.minecraftempires.entities.tiles.TileEntityCampfire;
 import com.cosmicdan.minecraftempires.items.ModItems;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockCampfire extends Block {
     
@@ -48,7 +43,6 @@ public class BlockCampfire extends Block {
         if (!world.isRemote) {
             if (player.getHeldItem() == null)
                 return true;
-            Item playerItem = player.getHeldItem().getItem();
             if (player.getHeldItem().getItem() == Items.stick) {
                 //world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
                 world.setBlockToAir(posX, posY, posZ);

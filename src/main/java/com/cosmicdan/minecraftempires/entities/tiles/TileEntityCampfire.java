@@ -1,8 +1,5 @@
 package com.cosmicdan.minecraftempires.entities.tiles;
 
-import java.util.Iterator;
-
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -11,33 +8,52 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+
+import com.cosmicdan.minecraftempires.blocks.ModBlocks;
 
 /*
  * TODO: I plan to do more of these "non-GUI machines" , best to move it into a base 
  * class and extend that when I do make another one.
  */
 public class TileEntityCampfire extends TileEntity {
-    // lifetime of a lit campfire, in minutes
-    public double entityLifetime = 5;
-    // how long it'll take for food to cook, in seconds
+	
+	/** Lifetime of a lit campfire, in minutes. */
+    public double entityLifetime = 1;
+    
+    /** How long it'll take for food to cook, in seconds. */
     public int itemProcessTime = 60;
     
-    // some of these are public only because I don't see the point in "getter" methods
-    public int metadata; // 1 = not cooking, 2 = cooking/cooked
+    /** Metadata, used for internal processing of pigs.
+     * if cooking: default meta + 6.
+     */
+    public int metadata;
+    
+    /** Slots with items. */
     public ItemStack itemSlot[] = new ItemStack[4];
-    public int itemSlotStatus[] = new int[4]; // 0 = slot empty, 1 = slot processing, 2 = slot processed
-    private int itemSlotRemaining[] = new int[4]; // how long until the slot is finished processing (always 0 if slot status != 1)
     
-    private boolean needUpdate = false;
+    /** 0 = empty, 1 = processing, 2 = processed. */
+    public int itemSlotStatus[] = new int[4];
     
+    /** How long until processed, always 0 if {@link itemSlotStatus} != 1. */
+    private int itemSlotRemaining[] = new int[4];
+    
+    /** Indicates that the tile entity has to be updated. */
+    public boolean needUpdate = false;
+    
+    /** Timer for entityLifetime decrement. */
     private int entityLifeCurrent = 0;
-    private int entityLifeMax = (int) (entityLifetime * 60 * 20);
+    
+    /** Used to set the food processing timer's initial value. */
     private int itemProcessMax = itemProcessTime * 20;
     
+    /** Dummy constructor. */
     public TileEntityCampfire() {}
     
+    /**
+     * @param world WorldObj that the tileentity will exist in.
+     * @param metadata Initial metadata of the tileentity. 
+     */
     public TileEntityCampfire(World world, int metadata) {
         this.setWorldObj(world);
         this.metadata = metadata;
@@ -101,15 +117,31 @@ public class TileEntityCampfire extends TileEntity {
     public void updateEntity() {
         if (worldObj.isRemote) return;
         entityLifeCurrent += 1;
-        if (entityLifeCurrent >= entityLifeMax) {
-            // Campfire's life is over
-            if (this.hasWorldObj()) {
-                selfDestruct();
-            }
+        
+        if(entityLifeCurrent == 60*20)
+        {
+        	entityLifeCurrent = 0;
+        	System.out.println(metadata + " :: " + entityLifetime);
+        	if(entityLifetime != 0){
+        	if(metadata == 1){
+        		// Ember mode derp ;D
+        		entityLifetime-=1;
+        		metadata-=1;
+        		needUpdate = true;
+        	}
+        	else {
+        		metadata-=1;
+        		entityLifetime-=1;
+        		needUpdate = true;
+        	}
+        	}
+        	else
+        		this.worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.campfire, 0, 3);
         }
         // tick cooking stuff
         for (int i = 0; i < itemSlotStatus.length; i++) {
-            if (itemSlotStatus[i] == 1) {
+            if (itemSlotStatus[i] == 1 && entityLifetime > 1) {
+            	System.out.println("I'm on fire!");
                 --itemSlotRemaining[i]; // decrement timer
                 if (itemSlotRemaining[i] <= 0) {
                     // item cooked!
@@ -123,12 +155,16 @@ public class TileEntityCampfire extends TileEntity {
         }
         
         if (needUpdate) { // update the metadata for the renderer logic
-            this.metadata = 1; // default, in case no cooking/cooked item was found
+            // this.metadata = 1; // default, in case no cooking/cooked item was found
+        	if(this.metadata > 6)
+        		this.metadata = this.metadata - 6;
             for (int i = 0; i < itemSlotStatus.length; i++) {
                 if (itemSlotStatus[i] > 0) { // something is cooking/cooked, meta should be 2
-                    this.metadata = 2;
+                	this.metadata = this.metadata + 6;
+                	break;
                 }
             }
+            System.out.println(metadata);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, metadata, 3);
             this.markDirty();
@@ -137,6 +173,9 @@ public class TileEntityCampfire extends TileEntity {
         
     }
     
+    /** Tries to add an item to process.
+     @param itemStack the {@link ItemStack} to add.
+     @return true if successful, false otherwise. */
     public boolean tryAddItem(ItemStack itemStack) {
         if (FurnaceRecipes.smelting().getSmeltingResult(itemStack) == null) // invalid cookable, return false
             return false;
@@ -151,12 +190,17 @@ public class TileEntityCampfire extends TileEntity {
         return false;
     }
     
+    /** Adds the item to {@link itemSlot} and sets the status of {@link itemSlotStatus} and {@link itemSlotRemaining}.
+     @param itemStack the {@link ItemStack} to add to the specified slot.
+     @param slot the slot to add the {@link ItemStack} to. */
     private void addItem(ItemStack itemStack, int slot) {
         itemSlot[slot] = itemStack;
         itemSlotStatus[slot] = 1;
         itemSlotRemaining[slot] = itemProcessMax;
     }
     
+    /** Tries to remove processed items.
+     * @return {@link ItemStack} if successful, {@code null} otherwise. */
     public ItemStack tryRemoveItem() {
         for (int i = 0; i < itemSlotStatus.length; i++) {
             if (itemSlotStatus[i] == 2) {
@@ -170,6 +214,8 @@ public class TileEntityCampfire extends TileEntity {
         
     }
     
+    /** Removes the item in the specified slot.
+     @param slot the slot to remove the item from. */
     private ItemStack removeItem(int slot) {
         ItemStack retval = itemSlot[slot]; 
         itemSlot[slot] = null;
@@ -178,10 +224,17 @@ public class TileEntityCampfire extends TileEntity {
         return retval;
     }
     
-    private void selfDestruct() {
-        this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
-        this.invalidate();
-        // func_147480_a = destroyBlock(x,y,z,doDrop)
-        this.worldObj.func_147480_a(this.xCoord, this.yCoord, this.zCoord, false);
+    /** Tries to add fuel to the campfire.
+     @return true if successful, false otherwise. */
+    public boolean addFuel()
+    {
+    	if(metadata < 6 || metadata > 6 && metadata < 12)
+    	{
+	    	entityLifetime+=1;
+	    	metadata+=1;
+	    	needUpdate = true;
+	    	return true;
+    	}
+    	return false;
     }
  }

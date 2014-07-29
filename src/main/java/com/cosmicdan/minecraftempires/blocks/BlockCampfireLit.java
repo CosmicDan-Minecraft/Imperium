@@ -1,30 +1,27 @@
 package com.cosmicdan.minecraftempires.blocks;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
-import com.cosmicdan.minecraftempires.entities.tiles.TileEntityCampfire;
-import com.cosmicdan.minecraftempires.items.ModItems;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
+import com.cosmicdan.minecraftempires.entities.tiles.TileEntityCampfire;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockCampfireLit extends BlockContainer {
     
@@ -35,7 +32,7 @@ public class BlockCampfireLit extends BlockContainer {
         super(Material.fire);
         setBlockName("CampfireLit");
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        setLightLevel(1.0F);
+        //setLightLevel(1.0F);
     }
     
     // eject tile entity inventory 
@@ -87,30 +84,40 @@ public class BlockCampfireLit extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         TileEntityCampfire tileEntity = (TileEntityCampfire) world.getTileEntity(posX, posY, posZ);
-        if (!world.isRemote) {
-            if (player.getHeldItem() != null) {
-                Item playerItem = player.getHeldItem().getItem();
+        if (!world.isRemote)
+        {
+            if (player.getHeldItem() != null)
+            {
                 int blockMeta = world.getBlockMetadata(posX, posY, posZ);
-                if (blockMeta > 0 ) {
+                if (blockMeta > 0 )
+                {
                     // check for foods to add
                     Item item = player.getHeldItem().getItem();
-                    if (item instanceof ItemFood) {
+                    if (item instanceof ItemFood)
+                    {
                         // check for cookable meats
                         ItemStack itemStack = player.getHeldItem();
+                        
                         if (tileEntity.tryAddItem(itemStack))
                             --itemStack.stackSize;
+                        
                         else // slots are all full, save them time and return an item instead
                             tryRemoveItem(world, player, tileEntity);
-                    } else // not a valid input item, assume the player is trying to remove an item
+                    }
+                    else if(item == Items.stick)
+                    	tileEntity.addFuel();
+                    
+                    else // not a valid input item, assume the player is trying to remove an item
                         tryRemoveItem(world, player, tileEntity);
                 }
-            } else // player hand is empty, try to remove an item for them
+            }
+            else // player hand is empty, try to remove an item for them
                 tryRemoveItem(world, player, tileEntity);
         }
         return true;
     }
-    
-    private void tryRemoveItem(World world, EntityPlayer player, TileEntityCampfire tileEntity) {
+
+	private void tryRemoveItem(World world, EntityPlayer player, TileEntityCampfire tileEntity) {
         ItemStack itemStack = null;
         for (int i = 0; i < tileEntity.itemSlotStatus.length; i++) {
             itemStack = tileEntity.tryRemoveItem();
@@ -127,7 +134,10 @@ public class BlockCampfireLit extends BlockContainer {
 
     @Override
     public int getLightValue(IBlockAccess world, int posX, int posY, int posZ) {
-        return 15;
+    	if(world.getBlockMetadata(posX, posY, posZ) > 6)
+    		return world.getBlockMetadata(posX, posY, posZ) + 3;
+    	
+        return world.getBlockMetadata(posX, posY, posZ) + 9;
     }
    
     /*
@@ -151,7 +161,7 @@ public class BlockCampfireLit extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int icon, int meta) {
         if (icon < 4) {
-            if (meta != 2)
+            if (meta < 7)
                 return this.campfireIcon[icon];
             else if (icon < 2)
                 return this.campfireIcon[icon + 4];
