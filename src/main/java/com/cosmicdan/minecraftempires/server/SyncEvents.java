@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.cosmicdan.minecraftempires.Main;
 import com.cosmicdan.minecraftempires.eventhandlers.WorldTickEvents;
@@ -39,17 +40,20 @@ public class SyncEvents implements IMessage, IMessageHandler<SyncEvents, IMessag
     // fromBytes loads the packet data into the instance
     @Override
     public void fromBytes(ByteBuf buf) {
-        eventListDone = ByteBufUtils.readUTF8String(buf);
-        eventListPending = ByteBufUtils.readUTF8String(buf);
-        eventListPendingInstant = ByteBufUtils.readUTF8String(buf);
+        NBTTagCompound events = ByteBufUtils.readTag(buf);
+        eventListDone = events.getString("eventListDone");
+        eventListPending = events.getString("eventListPending");
+        eventListPendingInstant = events.getString("eventListPendingInstant");
     }
 
     // toBytes is for building the packet data
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, this.eventListDone);
-        ByteBufUtils.writeUTF8String(buf, this.eventListPending);
-        ByteBufUtils.writeUTF8String(buf, this.eventListPendingInstant);
+        NBTTagCompound events = new NBTTagCompound();
+        events.setString("eventListDone", this.eventListDone);
+        events.setString("eventListPending", this.eventListPending);
+        events.setString("eventListPendingInstant", this.eventListPendingInstant);
+        ByteBufUtils.writeTag(buf, events);
     }
 
     // onMessage is called after the data is received i.e. we "assign" the packet/message data here
@@ -64,15 +68,8 @@ public class SyncEvents implements IMessage, IMessageHandler<SyncEvents, IMessag
                         playerME.eventListDone = MinecraftEmpiresPlayer.stringToArrayList(msg.eventListDone);
                     } else {
                         // We only want to update pending events for the server (i.e. client needs to update server).
-                        // For some reason there is no need to update playerME props for client calls to server, no idea why. 
-                        // Could cause trouble down the line if there are duplicates and the server is loaded.
-                        
-                        /*
-                        if (msg.eventListPending.length() > 2) {
-                            
-                        }
-                        */
-
+                        // For some reason there is no need to update playerME props for client sends to the server, no idea why. 
+                        // Could cause trouble down the line if there are duplicates and the server is overloaded.
                         if (msg.eventListPendingInstant.length() > 2) {
                             if (WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)player)) {
                                 WorldTickEvents.eventPendingInstant = true;
