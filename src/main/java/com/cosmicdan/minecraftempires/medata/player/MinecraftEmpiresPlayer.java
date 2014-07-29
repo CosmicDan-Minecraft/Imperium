@@ -39,8 +39,7 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     
     public int playerAgeTier = 1; // Mirrors the faction Age, required for pre-faction mechanics  
     
-    
-    public Boolean canBreakWood = false;
+    public int[] playerAbilities = new int[127];
     
     public MinecraftEmpiresPlayer(EntityPlayer player) {
         this.player = player;
@@ -65,8 +64,9 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         playerProps.setLong("lastLogin", this.lastLogin);
         playerProps.setLong("lastSave", this.player.worldObj.getTotalWorldTime());
         playerProps.setInteger("playerAgeTier", playerAgeTier);
-        playerProps.setBoolean("canBreakWood", canBreakWood);
+        playerProps.setIntArray("playerAbilities", playerAbilities);
         playerData.setTag(EXT_PROP_NAME, playerProps);
+        
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
         this.lastLogin = player.worldObj.getTotalWorldTime();
         this.lastSave = playerProps.getLong("lastSave");
         this.playerAgeTier = playerProps.getInteger("playerAgeTier");
-        this.canBreakWood = playerProps.getBoolean("canBreakWood");
+        this.playerAbilities = playerProps.getIntArray("playerAbilities");
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.cosmicdan.minecraftempires.eventhandlers;
 
 import com.cosmicdan.minecraftempires.medata.player.MinecraftEmpiresPlayer;
+import com.cosmicdan.minecraftempires.medata.player.PlayerData;
+import com.cosmicdan.minecraftempires.medata.player.PlayerData.PlayerAbilities;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsEssential.EssentialEvents;
 import com.cosmicdan.minecraftempires.medata.player.PlayerEventsTutorial.TutorialEvents;
 
@@ -38,7 +40,7 @@ public class EventHandlerRestrictions {
     
     // this method is for determining if a tree block break is to be permitted or denied
     public void checkAbortTree(BreakSpeed event) {
-        if (!playerME.canBreakWood) {
+        if (!PlayerData.hasAbility(playerME, PlayerAbilities.CANPUNCHWOOD)) {
             if (!playerME.eventListDone.toString().contains("WOODPUNCH")) {
                 playerME.addInstantEvent(TutorialEvents.WOODPUNCH);
                 playerME.syncToServer("events");
