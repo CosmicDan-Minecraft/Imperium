@@ -21,22 +21,22 @@ import cpw.mods.fml.relauncher.Side;
  * player properties between server and client
  * It's bidirectional!
  */
-public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMessage> {
+public class SyncEvents implements IMessage, IMessageHandler<SyncEvents, IMessage> {
 
     public String eventListDone;
     public String eventListPending;
     public String eventListPendingInstant;
     
-    public SyncPlayerME() {}
+    public SyncEvents() {}
 
-    public SyncPlayerME(EntityPlayer player) {
+    public SyncEvents(EntityPlayer player) {
         MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(player);
         eventListDone = playerME.eventListDone.toString();
         eventListPending = playerME.eventListPending.toString();
         eventListPendingInstant = playerME.eventListPendingInstant.toString();
     }
 
-    // fromBytes loads the data into the class ready for sending
+    // fromBytes loads the packet data into the instance
     @Override
     public void fromBytes(ByteBuf buf) {
         eventListDone = ByteBufUtils.readUTF8String(buf);
@@ -44,7 +44,7 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
         eventListPendingInstant = ByteBufUtils.readUTF8String(buf);
     }
 
-    // toBytes is for sending a packet/request (in this case, server to the client)
+    // toBytes is for building the packet data
     @Override
     public void toBytes(ByteBuf buf) {
         ByteBufUtils.writeUTF8String(buf, this.eventListDone);
@@ -54,7 +54,7 @@ public class SyncPlayerME implements IMessage, IMessageHandler<SyncPlayerME, IMe
 
     // onMessage is called after the data is received i.e. we "assign" the packet/message data here
     @Override
-    public IMessage onMessage(SyncPlayerME msg, MessageContext ctx) {
+    public IMessage onMessage(SyncEvents msg, MessageContext ctx) {
             EntityPlayer player = Main.proxy.getPlayerFromMessageContext(ctx);
             if ( player != null) {
                 MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(player);
