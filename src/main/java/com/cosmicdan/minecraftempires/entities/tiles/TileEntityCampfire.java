@@ -17,8 +17,8 @@ import com.cosmicdan.minecraftempires.blocks.ModBlocks;
  * class and extend that when I do make another one.
  */
 public class TileEntityCampfire extends TileEntity {
-	
-	/** Lifetime of a lit campfire, in minutes. */
+    
+    /** Lifetime of a lit campfire, in minutes. */
     public double entityLifetime = 1;
     
     /** How long it'll take for food to cook, in seconds. */
@@ -31,7 +31,7 @@ public class TileEntityCampfire extends TileEntity {
     
     /** Slots with items. */
     public ItemStack itemSlot[] = new ItemStack[4];
-    
+
     /** 0 = empty, 1 = processing, 2 = processed. */
     public int itemSlotStatus[] = new int[4];
     
@@ -123,29 +123,29 @@ public class TileEntityCampfire extends TileEntity {
         
         if(entityLifeCurrent >= entityLifetimeMax)
         {
-        	entityLifeCurrent = 0;
-        	System.out.println(metadata + " :: " + entityLifetime);
-        	if(entityLifetime != 0)
-        	{
-            	if(metadata == 1)
-            	{
-            		// Ember mode derp ;D
-            		entityLifetime-=1;
-            		metadata-=1;
-            		needUpdate = true;
-            	} else
-            	{
-        		metadata-=1;
-        		entityLifetime-=1;
-        		needUpdate = true;
-            	}
-        	} else
-        		this.worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.campfire, 0, 3);
+            entityLifeCurrent = 0;
+            System.out.println(metadata + " :: " + entityLifetime);
+            if(entityLifetime != 0)
+            {
+                if(metadata == 1)
+                {
+                    // Ember mode derp ;D
+                    entityLifetime-=1;
+                    metadata-=1;
+                    needUpdate = true;
+                } else
+                {
+                metadata-=1;
+                entityLifetime-=1;
+                needUpdate = true;
+                }
+            } else
+                this.worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.campfire, 0, 3);
         }
         // tick cooking stuff
         for (int i = 0; i < itemSlotStatus.length; i++) {
             if (itemSlotStatus[i] == 1 && entityLifetime > 1) {
-            	System.out.println("I'm on fire!");
+                System.out.println("I'm on fire!");
                 --itemSlotRemaining[i]; // decrement timer
                 if (itemSlotRemaining[i] <= 0) {
                     // item cooked!
@@ -160,12 +160,12 @@ public class TileEntityCampfire extends TileEntity {
         
         if (needUpdate) { // update the metadata for the renderer logic
             // this.metadata = 1; // default, in case no cooking/cooked item was found
-        	if(this.metadata > 6)
-        		this.metadata = this.metadata - 6;
+            if(this.metadata > 6)
+                this.metadata = this.metadata - 6;
             for (int i = 0; i < itemSlotStatus.length; i++) {
                 if (itemSlotStatus[i] > 0) { // something is cooking/cooked, meta should be 2
-                	this.metadata = this.metadata + 6;
-                	break;
+                    this.metadata = this.metadata + 6;
+                    break;
                 }
             }
             System.out.println(metadata);
@@ -232,13 +232,13 @@ public class TileEntityCampfire extends TileEntity {
      @return true if successful, false otherwise. */
     public boolean addFuel()
     {
-    	if(metadata < 6 || metadata > 6 && metadata < 12)
-    	{
-	    	entityLifetime+=1;
-	    	metadata+=1;
-	    	needUpdate = true;
-	    	return true;
-    	}
-    	return false;
+        if(metadata < 6 || metadata > 6 && metadata < 12)
+        {
+            entityLifetime+=1;
+            metadata+=1;
+            needUpdate = true;
+            return true;
+        }
+        return false;
     }
  }

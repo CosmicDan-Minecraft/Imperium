@@ -17,7 +17,7 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
 
     public boolean renderWorldBlock(IBlockAccess blockAccess, int posX, int posY, int posZ, Block block, int modelId, RenderBlocks renderer) {
         
-    	Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.instance;
         IIcon iicon;
         float u;
         float v;
@@ -34,7 +34,7 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
         double metaToFire = blockMeta > 6 ? ( (blockMeta - 6)/6.0D + 0.3D ) : ( blockMeta/6.0D + 0.3D );
         
         if (blockMeta > 0) {
-        	tessellator.setColorOpaque_F(1F, 1F, 1F);
+            tessellator.setColorOpaque_F(1F, 1F, 1F);
             // is on fire, draw the fire
             iicon = Blocks.fire.getIcon(0, 0);
             u = iicon.getMinU();
@@ -62,8 +62,8 @@ public final class RenderCampfire extends RendererCommon implements ISimpleBlock
             tessellator.addVertexWithUV(1, 0, 0, U, V);
             // check for cooking
             if (blockMeta > 6) {
-            	System.out.println("I AM NOT DEAD");
-            	tessellator.setColorOpaque_F(0.5F, 0.5F, 0.5F);
+                System.out.println("I AM NOT DEAD");
+                tessellator.setColorOpaque_F(0.5F, 0.5F, 0.5F);
                 // DODGY CODE WARNING
                 // draw spit struts
                 iicon = block.getIcon(0, 7);

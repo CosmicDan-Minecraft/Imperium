@@ -105,7 +105,7 @@ public class BlockCampfireLit extends BlockContainer {
                             tryRemoveItem(world, player, tileEntity);
                     }
                     else if(item == Items.stick)
-                    	tileEntity.addFuel();
+                        tileEntity.addFuel();
                     
                     else // not a valid input item, assume the player is trying to remove an item
                         tryRemoveItem(world, player, tileEntity);
@@ -117,7 +117,7 @@ public class BlockCampfireLit extends BlockContainer {
         return true;
     }
 
-	private void tryRemoveItem(World world, EntityPlayer player, TileEntityCampfire tileEntity) {
+    private void tryRemoveItem(World world, EntityPlayer player, TileEntityCampfire tileEntity) {
         ItemStack itemStack = null;
         for (int i = 0; i < tileEntity.itemSlotStatus.length; i++) {
             itemStack = tileEntity.tryRemoveItem();
@@ -134,9 +134,9 @@ public class BlockCampfireLit extends BlockContainer {
 
     @Override
     public int getLightValue(IBlockAccess world, int posX, int posY, int posZ) {
-    	if(world.getBlockMetadata(posX, posY, posZ) > 6)
-    		return world.getBlockMetadata(posX, posY, posZ) + 3;
-    	
+        if(world.getBlockMetadata(posX, posY, posZ) > 6)
+            return world.getBlockMetadata(posX, posY, posZ) + 3;
+        
         return world.getBlockMetadata(posX, posY, posZ) + 9;
     }
    
