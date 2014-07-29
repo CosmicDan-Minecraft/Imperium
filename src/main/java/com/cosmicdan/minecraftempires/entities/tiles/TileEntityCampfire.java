@@ -22,7 +22,7 @@ public class TileEntityCampfire extends TileEntity {
     public double entityLifetime = 1;
     
     /** How long it'll take for food to cook, in seconds. */
-    public int itemProcessTime = 60;
+    public int itemProcessTime = 40;
     
     /** Metadata, used for internal processing of pigs.
      * if cooking: default meta + 6.
