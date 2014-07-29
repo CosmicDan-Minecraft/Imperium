@@ -44,7 +44,7 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
     }
     
     public void renderThisTileEntity(TileEntityCampfire tileEntity, double dx, double dy, double dz, float f) {
-        if (tileEntity.metadata > 6) { // is cooking/cooked, draw rod and items
+        if (tileEntity.metadata > 6) { // has food in inventory, draw the spit and items
             tessellator = Tessellator.instance;
             
             // draw the spit rod
@@ -91,17 +91,6 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
                     GL11.glPopMatrix();
                 }
             }
-            /*
-            String slot1 = "none";
-            String slot2 = "none";
-            String slot3 = "none";
-            String slot4 = "none";
-            if (tileEntity.itemSlot[0] != null) slot1 = tileEntity.itemSlot[0].getUnlocalizedName();
-            if (tileEntity.itemSlot[1] != null) slot2 = tileEntity.itemSlot[1].getUnlocalizedName();
-            if (tileEntity.itemSlot[2] != null) slot3 = tileEntity.itemSlot[2].getUnlocalizedName();
-            if (tileEntity.itemSlot[3] != null) slot4 = tileEntity.itemSlot[3].getUnlocalizedName();
-            System.out.println(slot1 + "/" + slot2 + "/" + slot3 + "/" + slot4);
-            */
         }
     }
     

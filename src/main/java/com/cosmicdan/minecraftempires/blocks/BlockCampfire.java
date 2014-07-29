@@ -46,7 +46,7 @@ public class BlockCampfire extends Block {
             if (player.getHeldItem().getItem() == Items.stick) {
                 //world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
                 world.setBlockToAir(posX, posY, posZ);
-                world.setBlock(posX, posY, posZ, ModBlocks.campfireLit, 1, 3);
+                world.setBlock(posX, posY, posZ, ModBlocks.campfireLit, 2, 3);
             }
         }
         //world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);

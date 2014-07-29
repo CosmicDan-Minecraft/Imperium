@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 
 import com.cosmicdan.minecraftempires.client.renderers.ModRenderers;
 import com.cosmicdan.minecraftempires.entities.tiles.TileEntityCampfire;
+import com.cosmicdan.minecraftempires.items.ModItems;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,7 +33,6 @@ public class BlockCampfireLit extends BlockContainer {
         super(Material.fire);
         setBlockName("CampfireLit");
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        //setLightLevel(1.0F);
     }
     
     // eject tile entity inventory 
@@ -49,7 +49,6 @@ public class BlockCampfireLit extends BlockContainer {
                 itemStack = tileEntity.itemSlot[i];
                 if (itemStack != null) {
                     itemStack.stackSize = 1;
-                    System.out.println("1");
                     ranX = this.random.nextFloat() * 0.8F + 0.1F;
                     ranY = this.random.nextFloat() * 0.8F + 0.1F;
                     ranZ = this.random.nextFloat() * 0.8F + 0.1F;
@@ -77,11 +76,6 @@ public class BlockCampfireLit extends BlockContainer {
     }
     
     @Override
-    public void onBlockAdded(World world, int posX, int posY, int posZ) {
-        world.setBlockMetadataWithNotify(posX, posY, posZ, 1, 3);
-    }
-    
-    @Override
     public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         TileEntityCampfire tileEntity = (TileEntityCampfire) world.getTileEntity(posX, posY, posZ);
         if (!world.isRemote)
@@ -104,9 +98,10 @@ public class BlockCampfireLit extends BlockContainer {
                         else // slots are all full, save them time and return an item instead
                             tryRemoveItem(world, player, tileEntity);
                     }
-                    else if(item == Items.stick)
-                        tileEntity.addFuel();
-                    
+                    else if(item == Items.stick || item == ModItems.brushwood) {
+                        if (tileEntity.addFuel())
+                            --player.getHeldItem().stackSize;
+                    }
                     else // not a valid input item, assume the player is trying to remove an item
                         tryRemoveItem(world, player, tileEntity);
                 }
@@ -134,10 +129,15 @@ public class BlockCampfireLit extends BlockContainer {
 
     @Override
     public int getLightValue(IBlockAccess world, int posX, int posY, int posZ) {
-        if(world.getBlockMetadata(posX, posY, posZ) > 6)
-            return world.getBlockMetadata(posX, posY, posZ) + 3;
+        int currentMeta = world.getBlockMetadata(posX, posY, posZ);
         
-        return world.getBlockMetadata(posX, posY, posZ) + 9;
+        if (currentMeta == 0 || currentMeta == 7)
+            return 0;
+        
+        if(currentMeta > 7)
+            return currentMeta + 2;
+        else
+            return world.getBlockMetadata(posX, posY, posZ) + 9;
     }
    
     /*
@@ -159,9 +159,9 @@ public class BlockCampfireLit extends BlockContainer {
      * Icon stuff for textures
      */
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int icon, int meta) {
+    public IIcon getIcon(int icon, int option) {
         if (icon < 4) {
-            if (meta < 7)
+            if (option < 7)
                 return this.campfireIcon[icon];
             else if (icon < 2)
                 return this.campfireIcon[icon + 4];
