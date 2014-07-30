@@ -56,7 +56,7 @@ public class MinecraftEmpiresPlayer implements IExtendedEntityProperties {
     @Override
     public void saveNBTData(NBTTagCompound playerData) {
         NBTTagCompound playerProps = new NBTTagCompound();
-        playerProps.setBoolean("hasData", true);
+        playerProps.setBoolean("hasData", hasData);
         playerProps.setBoolean("eventPending", eventPending);
         playerProps.setString("eventListPending", eventListPending.toString());
         playerProps.setString("eventListPendingInstant", eventListPendingInstant.toString());

@@ -30,6 +30,7 @@ public class PlayerEvents {
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         MinecraftEmpiresPlayer playerME = MinecraftEmpiresPlayer.get(event.player);
         if (!playerME.hasData) {
+            playerME.hasData = true;
             playerME.addInstantEvent(EssentialEvents.FIRSTJOIN);
             WorldTickEvents.addPlayerToPendingInstants((EntityPlayerMP)event.player);
             WorldTickEvents.eventPendingInstant = true;
