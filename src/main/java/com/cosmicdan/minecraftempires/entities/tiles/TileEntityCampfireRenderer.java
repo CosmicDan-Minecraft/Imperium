@@ -28,7 +28,6 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
     private float v;
     private float U;
     private float V;
-    private IIcon itemIcon;
     
     public TileEntityCampfireRenderer() {
         spitrod = ModBlocks.campfireLit.getIcon(1, 7);
@@ -97,7 +96,7 @@ public class TileEntityCampfireRenderer extends TileEntitySpecialRenderer {
     private void drawItem(ItemStack itemStack) {
         //itemIcon = Items.beef.getIconFromDamage(0);
         if (itemStack == null) return;
-        itemIcon = itemStack.getItem().getIconFromDamage(0);
+        IIcon itemIcon = itemStack.getIconIndex();
         GL11.glTranslated(transX, transY, transZ);
         GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
         u = itemIcon.getMinU();
