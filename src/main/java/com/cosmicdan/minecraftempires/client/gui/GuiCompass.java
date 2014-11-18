@@ -29,7 +29,7 @@ public class GuiCompass extends Gui {
     }
     
     @SubscribeEvent
-    public void compassRender(RenderGameOverlayEvent event) {
+    public void compassRender(RenderGameOverlayEvent.Post event) {
         // ensure we are rendering at the right time
         // TODO: Also ensure playerME.hasCompass, this will be very set early in the tutorial
         if (event.isCancelable() || event.type != ElementType.EXPERIENCE) {      
