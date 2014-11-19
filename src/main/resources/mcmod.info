@@ -1,14 +1,20 @@
 [
 {
-  "modid": "minecraftempires",
-  "name": "Minecraft Empires",
-  "description": "Settle, Develop, Research and Conquer the Land!",
+  "modid": "imperium4x",
+  "name": "Imperium",
+  "description": "A progressive 4X Strategy / City-builder modification for Minecraft.
+
+Credits:
+ - Forge/FML and MCP teams;
+ - Xuluf, SynthTones, 4HeadTiger, coolAlias and diesieben07 for corrections and contributions;
+ - Dulciphi for support;
+",
   "version": "PROTOTYPE",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "N/A",
   "updateUrl": "",
   "authorList": ["CosmicDan"],
-  "credits": "Forge/FML and MCP teams; SynthTones and 4HeadTiger for code contributions; coolAlias, diesieben07, and Xuluf for code help/examples; Dulciphi for support",
+  "credits": "See description below",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

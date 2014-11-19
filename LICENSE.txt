@@ -1,14 +1,13 @@
-Minecraft Empires and all parts of it, except as otherwise noted, is 
-licensed under the GNU Lesser Public License v3 (LGPLv3), including 
-all parts, except as noted below.
+Imperium is licensed under the GNU Lesser Public License v3 (LGPLv3), 
+including all parts, except as noted below.
 
-Some parts Public Domain/WTFPL and may not be specified as such. Credit
-is listed where possible.
+Some parts Public Domain or "WTFPL" and may not be specified as such. Credit
+is listed in-line where possible.
 
 Additional licenses apply to Forge Mod Loader and its components which 
 this code depends on, however are not included in this repository - only 
 referenced. Please refer to LICENSE-fml.txt in the relevant Forge source 
-version package for additional conditions that may apply.
+version package for additional terms and conditions that may apply.
 
 ====================================================
 
