@@ -25,9 +25,9 @@ public class EventHandlerRestrictions {
     public void onBreakSpeed(BreakSpeed event) { // player is trying to break a block
         final ImperiumPlayer playerImperium = ImperiumPlayer.get(event.entityPlayer); 
         if (event.block == Blocks.log)
-            checkAbortTree(event);
+            checkAbortTree(event, playerImperium);
         else if (event.block == Blocks.log2)
-            checkAbortTree(event);
+            checkAbortTree(event, playerImperium);
     }
     
     // this method is for determining if a tree block break is to be permitted or denied
