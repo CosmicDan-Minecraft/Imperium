@@ -21,25 +21,17 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
   * This will become massive in future, so it gets it's own class based on purpose rather than specific events
   */
 public class EventHandlerRestrictions {
-    
-    ImperiumPlayer playerImperium;
-    
-    // hook event when a player is trying to break a block
     @SubscribeEvent
-    public void onBreakSpeed(BreakSpeed event) {
-        playerImperium = ImperiumPlayer.get(event.entityPlayer); 
-        if (event.block == Blocks.log) {
-            // the player is trying to break a vanilla tree
+    public void onBreakSpeed(BreakSpeed event) { // player is trying to break a block
+        final ImperiumPlayer playerImperium = ImperiumPlayer.get(event.entityPlayer); 
+        if (event.block == Blocks.log)
             checkAbortTree(event);
-        }
-        else if (event.block == Blocks.log2) {
-            // the player is trying to break another vanilla tree
+        else if (event.block == Blocks.log2)
             checkAbortTree(event);
-        }
     }
     
     // this method is for determining if a tree block break is to be permitted or denied
-    public void checkAbortTree(BreakSpeed event) {
+    public void checkAbortTree(final BreakSpeed event, final ImperiumPlayer playerImperium) {
         if (!PlayerData.hasAbility(playerImperium, PlayerAbilities.CANPUNCHWOOD)) {
             if (!playerImperium.eventListDone.toString().contains("WOODPUNCH")) {
                 playerImperium.addInstantEvent(TutorialEvents.WOODPUNCH);
