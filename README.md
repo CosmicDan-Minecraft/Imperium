@@ -1,8 +1,6 @@
 # Imperium
 ### A progressive 4X Strategy / City-builder modification for Minecraft
 
-##### Additional details (goal, background, features, etc.) at the [Minecraft Forums thread](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2140517-prototype-imperium-4x-strategy-city-builder).
-
 #### Requirements:
 * Minecraft v1.7.10
 * Forge 10.13.2.1230
